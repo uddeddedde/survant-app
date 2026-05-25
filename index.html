@@ -1,0 +1,2893 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survant App</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    }
+
+    /* ── 공통 앱 컨테이너 ── */
+    .app-container {
+      width: 402px;
+      height: 874px;
+      position: relative;
+      background: #000;
+      overflow: hidden;
+    }
+
+    /* ── 화면 전환 ── */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+    }
+    .screen.active-screen {
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════
+       공통 컴포넌트
+    ═══════════════════════════════════════ */
+
+    /* footer (1:262) */
+    .footer {
+      position: absolute;
+      left: 0;
+      top: 789px;
+      width: 403px;
+      height: 85px;
+    }
+    .footer-bg {
+      position: absolute;
+      inset: 0;
+      background: #2c2c2e;
+    }
+    /* person (1:256) */
+    .footer-person {
+      position: absolute;
+      width: 38.89px;
+      height: 45.02px;
+      left: 73.7%;
+      top: 21px;
+    }
+    .footer-person img {
+      position: absolute;
+      top: 0;
+      left: 23.14%;
+      right: 20.72%;
+      bottom: 51.5%;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .footer-person p {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      font-size: 12.281px;
+      font-weight: 400;
+      color: #fff;
+      text-align: center;
+      line-height: normal;
+      text-transform: capitalize;
+    }
+    /* heart_check (1:259) */
+    .footer-heart {
+      position: absolute;
+      width: 32.749px;
+      height: 47.306px;
+      left: 18.11%;
+      top: 19px;
+    }
+    .footer-heart img {
+      position: absolute;
+      top: 0;
+      left: 6.11%;
+      right: 4.52%;
+      bottom: 49.02%;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .footer-heart p {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      font-size: 12.281px;
+      font-weight: 400;
+      color: #fff;
+      text-align: center;
+      line-height: normal;
+      text-transform: capitalize;
+    }
+
+    /* day (1:455) */
+    .day-label {
+      position: absolute;
+      left: 18px;
+      top: 73px;
+      width: 87px;
+      height: 20px;
+    }
+    .day-label p {
+      position: absolute;
+      inset: 0;
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      line-height: normal;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+
+    /* date_bar (1:457) */
+    .date-bar {
+      position: absolute;
+      left: 112px;
+      top: 81px;
+      width: 8px;
+      height: 4px;
+    }
+    .date-bar img {
+      position: absolute;
+      top: -13.68%;
+      left: -6.41%;
+      right: -6.85%;
+      bottom: -26.53%;
+      max-width: none;
+      width: calc(100% + 13.26%);
+      height: calc(100% + 40.21%);
+      object-fit: fill;
+    }
+
+    /* process 공통 (1:28) */
+    .process {
+      position: absolute;
+      width: 38px;
+      height: 55px;
+    }
+    .process .p-e {
+      position: absolute;
+      top: 29.09%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+    .process .p-e img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      max-width: none;
+    }
+    .process .p-null {
+      position: absolute;
+      top: 43.64%;
+      left: 21.05%;
+      right: 21.05%;
+      bottom: 16.36%;
+    }
+    .process .p-null img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      max-width: none;
+    }
+    .process .day-txt {
+      position: absolute;
+      top: 0;
+      left: 36.84%;
+      right: 39.47%;
+      bottom: 78.18%;
+      font-size: 10px;
+      font-weight: 400;
+      color: #fff;
+      text-align: center;
+      line-height: normal;
+      white-space: nowrap;
+    }
+    .process .date-num {
+      position: absolute;
+      top: 49.09%;
+      left: 26.32%;
+      right: 26.32%;
+      bottom: 20%;
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+      text-align: center;
+      line-height: normal;
+      white-space: nowrap;
+    }
+    .process .process-e {
+      position: absolute;
+      top: 29.09%;
+      left: 39.47%;
+      right: 39.47%;
+      bottom: 56.36%;
+    }
+    .process .process-e img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      max-width: none;
+    }
+
+    /* today_r (1:464) */
+    .today-r {
+      position: absolute;
+      left: 234px;
+      top: 101px;
+      width: 48px;
+      height: 68px;
+    }
+    .today-r-bg {
+      position: absolute;
+      inset: 0;
+      background: #1c1c1e;
+      border-radius: 8px;
+    }
+
+    /* today_e (1:273) */
+    .today-e {
+      position: absolute;
+      left: 267px;
+      top: 106px;
+      width: 5px;
+      height: 5px;
+    }
+    .today-e img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+
+    /* medication_time (1:470) */
+    .medication-time {
+      position: absolute;
+      left: 19px;
+      top: 195px;
+      width: 63px;
+      height: 18px;
+    }
+    .medication-time p {
+      position: absolute;
+      inset: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: #9e9e9e;
+      text-align: center;
+      line-height: normal;
+      white-space: nowrap;
+    }
+
+    /* medication line (1:472) */
+    .medication-line {
+      position: absolute;
+      left: 95.5px;
+      top: 204.5px;
+      width: 288.5px;
+      height: 0;
+    }
+    .medication-line img {
+      position: absolute;
+      top: -0.5px;
+      left: 0;
+      right: 0;
+      bottom: -0.5px;
+      width: 100%;
+      height: 1px;
+      max-width: none;
+      object-fit: fill;
+    }
+
+    /* medication_alert (1:275) */
+    .medication-alert {
+      position: absolute;
+      left: 19px;
+      top: 221px;
+      width: 365px;
+      height: 99px;
+    }
+    .medication-alert-bg {
+      position: absolute;
+      inset: 0;
+      background: #1c1c1e;
+      border-radius: 15px;
+    }
+    .medication-alert .days-txt {
+      position: absolute;
+      top: 12.12%;
+      left: 4.38%;
+      right: 65.21%;
+      bottom: 71.72%;
+      font-size: 13px;
+      font-weight: 400;
+      color: #fff;
+      text-align: center;
+      line-height: normal;
+      letter-spacing: 1.04px;
+      white-space: nowrap;
+      text-transform: capitalize;
+    }
+    .medication-alert .medicine-name {
+      position: absolute;
+      top: 40.4%;
+      left: 4.38%;
+      right: 81.92%;
+      bottom: 40.4%;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      line-height: normal;
+      letter-spacing: 1.28px;
+      white-space: nowrap;
+      text-transform: capitalize;
+    }
+    .medication-alert .dosage-txt {
+      position: absolute;
+      top: 65.66%;
+      left: 4.66%;
+      right: 88.49%;
+      bottom: 18.18%;
+      font-size: 13px;
+      font-weight: 300;
+      color: #9e9e9e;
+      text-align: center;
+      line-height: normal;
+      letter-spacing: 0.52px;
+      white-space: nowrap;
+      text-transform: capitalize;
+    }
+
+    /* state off (1:40) */
+    .state-off {
+      position: absolute;
+      left: 303px;
+      top: 254px;
+      width: 66px;
+      height: 34px;
+    }
+    .state-off-bg {
+      position: absolute;
+      inset: 0;
+      background: #1e2924;
+      border-radius: 20px;
+    }
+    .state-off p {
+      position: absolute;
+      left: 42.5px;
+      top: 8px;
+      transform: translateX(-50%);
+      font-size: 14px;
+      font-weight: 500;
+      color: #4c9964;
+      text-align: center;
+      line-height: normal;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+    .state-off .ellipse {
+      position: absolute;
+      left: 13px;
+      top: 10px;
+      width: 13px;
+      height: 13px;
+    }
+    .state-off .ellipse img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+
+    /* plusBtn (16:573) */
+    .plus-btn {
+      position: absolute;
+      left: 325px;
+      top: 710px;
+      width: 64.109px;
+      height: 62.964px;
+    }
+    .plus-btn-bg {
+      position: absolute;
+      inset: 0;
+      background: #328a4e;
+      border-radius: 12.992px;
+    }
+    .plus-btn .plus-icon {
+      position: absolute;
+      top: 31.03%;
+      left: 30.49%;
+      right: 32.08%;
+      bottom: 30.06%;
+    }
+    .plus-btn .plus-icon img {
+      position: absolute;
+      top: -5.26%;
+      left: -5.37%;
+      right: -4.38%;
+      bottom: 0;
+      max-width: none;
+      width: calc(100% + 9.75%);
+      height: calc(100% + 5.26%);
+      object-fit: fill;
+    }
+
+    /* ═══════════════════════════════════════
+       HOME 화면 전용
+    ═══════════════════════════════════════ */
+
+    /* assistantBtn (1:2) */
+    .assistant-btn {
+      position: absolute;
+      left: 138px;
+      top: 757px;
+      width: 126.904px;
+      height: 126.904px;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .assistant-btn img.btn-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+    .assistant-btn .btn-inner {
+      position: absolute;
+      top: 12.71%;
+      left: 25.81%;
+      right: 25.8%;
+      bottom: 17.11%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 9.825px;
+    }
+    .assistant-btn .btn-inner .chick-img {
+      width: 58.949px;
+      height: 53.233px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .assistant-btn .btn-inner .chick-img img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+    .assistant-btn .btn-inner p {
+      font-size: 22.106px;
+      font-weight: 700;
+      color: #ffe682;
+      text-align: center;
+      line-height: normal;
+      text-transform: capitalize;
+      white-space: nowrap;
+      width: 92.108px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════
+       READY 화면 전용
+    ═══════════════════════════════════════ */
+
+    /* bg_black30 (1:505) */
+    .bg-black30 {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 402px;
+      height: 874px;
+      z-index: 1;
+    }
+    .bg-black30-inner {
+      position: absolute;
+      inset: 0;
+      background: #000;
+      opacity: 0.3;
+    }
+
+    /* assitantBtn2 (1:15) - ready 화면 */
+    .assistant-btn2 {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 84.1%;
+      width: 158px;
+      height: 158px;
+      z-index: 2;
+      cursor: pointer;
+    }
+    .assistant-btn2 .btn2-bg {
+      position: absolute;
+      top: -4.29%;
+      left: -4.29%;
+      right: -4.29%;
+      bottom: -4.29%;
+      max-width: none;
+      width: calc(100% + 8.58%);
+      height: calc(100% + 8.58%);
+    }
+    .assistant-btn2 .btn2-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      max-width: none;
+    }
+    .assistant-btn2 .btn2-inner {
+      position: absolute;
+      top: 20.55%;
+      left: 31.29%;
+      right: 31.05%;
+      bottom: 24.34%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 9.521px;
+      z-index: 1;
+    }
+    .assistant-btn2 .btn2-inner .chick2-img {
+      width: 57.126px;
+      height: 51.587px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .assistant-btn2 .btn2-inner .chick2-img img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+    .assistant-btn2 .btn2-inner p {
+      font-size: 21.422px;
+      font-weight: 700;
+      color: #ffe682;
+      text-align: center;
+      line-height: normal;
+      text-transform: capitalize;
+      white-space: nowrap;
+      width: 89.26px;
+      flex-shrink: 0;
+    }
+
+    /* agent_txt (1:508) - ready 화면 */
+    .agent-txt-ready {
+      position: absolute;
+      left: 121px;
+      top: 652px;
+      width: 159px;
+      height: 52px;
+      z-index: 2;
+    }
+    .agent-txt-ready p {
+      position: absolute;
+      left: 50%;
+      transform: translateX(calc(-50% + 0.5px));
+      bottom: 52px;
+      transform: translateX(calc(-50% + 0.5px)) translateY(100%);
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #ffe682;
+      text-align: center;
+      line-height: 1.4;
+      opacity: 0.7;
+      white-space: nowrap;
+    }
+
+    /* ── ready 화면 배경 클릭 영역 (btn2 제외한 나머지) ── */
+    .ready-bg-tap {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      cursor: pointer;
+    }
+    /* btn2 위에 z-index 4 */
+    .assistant-btn2 {
+      z-index: 4;
+    }
+    /* agent_txt도 btn2 아래에 있어야 하므로 z-index 2 유지 */
+
+    /* ═══════════════════════════════════════
+       ACTIVE 화면 전용
+    ═══════════════════════════════════════ */
+
+    /* AI_y (1:529) */
+    .ai-y {
+      position: absolute;
+      left: -195px;
+      top: 494px;
+      width: 792.86px;
+      height: 721.776px;
+      z-index: 1;
+    }
+    .ai-y img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+    /* agent_txt inside AI_y (I1:531;1:509) */
+    .ai-y .agent-txt-active {
+      position: absolute;
+      top: 17.46%;
+      left: 39.98%;
+      right: 39.96%;
+      bottom: 75.34%;
+    }
+    .ai-y .agent-txt-active p {
+      position: absolute;
+      left: 50%;
+      transform: translateX(calc(-50% + 0.5px)) translateY(100%);
+      bottom: 52px;
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #ffe682;
+      text-align: center;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    /* Survant (1:280) - active 화면 */
+    /* Survant 컴포넌트 (1:280) - Figma 레이어 구조 그대로 */
+    .survant {
+      position: absolute;
+      left: 50%;
+      transform: translateX(calc(-50% + 0.26px));
+      bottom: 35.58px;
+      width: 146.522px;
+      height: 128.421px;
+      z-index: 2;
+    }
+    /* 몸통 (1:281) - inset: 6.54% 18.23% 6.28% 18.72% */
+    .survant-body {
+      position: absolute;
+      top: 6.54%; right: 18.23%; bottom: 6.28%; left: 18.72%;
+    }
+    .survant-body img {
+      position: absolute; inset: 0 2.04%;
+      width: calc(100% - 4.08%); height: 100%; max-width: none; display: block;
+    }
+    /* 왼쪽 눈 (1:282) - inset: 35.6% 56.44% 59.31% 39.1% */
+    .survant-eye-l {
+      position: absolute;
+      top: 35.6%; right: 56.44%; bottom: 59.31%; left: 39.1%;
+    }
+    .survant-eye-l img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+    /* 오른쪽 눈 (1:283) - inset: 35.6% 37.98% 59.31% 57.57% */
+    .survant-eye-r {
+      position: absolute;
+      top: 35.6%; right: 37.98%; bottom: 59.31%; left: 57.57%;
+    }
+    .survant-eye-r img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+    /* 코 배경 - #d77f46 다이아몬드 (1:284) */
+    .survant-beak-bg {
+      position: absolute;
+      left: 43.56%; right: 42.93%;
+      top: 52.25px;
+      width: 13.51px; height: 13.51px;
+      background: #d77f46;
+      transform: rotate(-45deg);
+    }
+    /* 코 이미지 (1:285) */
+    .survant-beak {
+      position: absolute;
+      left: 43.56%; right: 42.93%;
+      top: 52.25px;
+      width: 13.51px; height: 13.51px;
+      transform: rotate(-45deg);
+    }
+    .survant-beak img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+    /* 오른쪽 귀 (1:286) - inset: 0 48.16% 87.65% 48.65% */
+    .survant-ear-r {
+      position: absolute;
+      top: 0; right: 48.16%; bottom: 87.65%; left: 48.65%;
+      background: #ffe682;
+      border-radius: 11.918px;
+    }
+    /* 왼쪽 귀 a (1:287) */
+    .survant-ear-la {
+      position: absolute;
+      top: 0; right: 49.75%; bottom: 87.15%; left: 43.56%;
+      background: #ffe682;
+      border-radius: 11.918px;
+      transform: rotate(-20deg);
+      transform-origin: center;
+    }
+    /* 왼쪽 귀 b (1:288) */
+    .survant-ear-lb {
+      position: absolute;
+      top: 0; right: 43.06%; bottom: 87.15%; left: 50.24%;
+      background: #ffe682;
+      border-radius: 11.918px;
+      transform: rotate(-160deg) scaleX(-1);
+      transform-origin: center;
+    }
+    /* 왼쪽 날개 (1:289) - inset: 40.83% 62.2% 19.38% 0 */
+    .survant-wing-l {
+      position: absolute;
+      top: 40.83%; right: 62.2%; bottom: 19.38%; left: 0;
+    }
+    .survant-wing-l img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+    /* 오른쪽 날개 (1:290) - inset: 40.83% 0 19.38% 62.2% */
+    .survant-wing-r {
+      position: absolute;
+      top: 40.83%; right: 0; bottom: 19.38%; left: 62.2%;
+    }
+    .survant-wing-r img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+    /* 발 (1:291) - inset: 81.21% 31.47% 0 31.72% */
+    .survant-feet {
+      position: absolute;
+      top: 81.21%; right: 31.47%; bottom: 0; left: 31.72%;
+    }
+    .survant-feet img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+
+    /* mod-med-chara (뿅아리) - Figma 기준 위치/크기 */
+    .mod-med-chara {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 35px;
+      width: 146.522px;
+      height: 128.421px;
+    }
+    .agent-txt-active p {
+      position: absolute;
+      left: 50%;
+      transform: translateX(calc(-50% + 0.5px)) translateY(100%);
+      bottom: 52px;
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #ffe682;
+      text-align: center;
+      line-height: 1.4;
+      white-space: normal;
+      word-break: keep-all;
+      width: 220px;
+      transition: opacity 0.3s;
+    }
+
+    /* ═══════════════════════════════════════
+       MOD_MED00_1 화면 (1:1594)
+    ═══════════════════════════════════════ */
+
+    /* 배경 이미지 (KakaoTalk_20260402_165647544_02 11) */
+    .mod-med-bg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(calc(-50% + 0.59px), -50%);
+      width: 403.182px;
+      height: 876.57px;
+      pointer-events: none;
+    }
+    .mod-med-bg img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      max-width: none;
+    }
+
+    /* Rectangle 240654684 (1:1596) */
+    .mod-med-rect1 {
+      position: absolute;
+      left: 64px;
+      top: 126px;
+      width: 323px;
+      height: 54px;
+      background: #1c1c1e;
+      border-radius: 12.035px;
+    }
+    /* Rectangle 240654685 (1:1597) */
+    .mod-med-rect2 {
+      position: absolute;
+      left: 64px;
+      top: 187px;
+      width: 323px;
+      height: 46px;
+      background: #1c1c1e;
+      border-radius: 12.035px;
+    }
+    /* Rectangle 240654683 (1:1598) */
+    .mod-med-rect3 {
+      position: absolute;
+      left: 15.42px;
+      top: 769.89px;
+      width: 379.162px;
+      height: 93.826px;
+      background: #1c1c1e;
+    }
+
+    /* Active_btn (1:1599) */
+    .mod-med-active-btn {
+      position: absolute;
+      left: 314px;
+      top: 770px;
+      width: 71.976px;
+      height: 71.976px;
+      z-index: 5;
+    }
+    .mod-med-active-btn img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+
+    /* user_medicine (1:1600) */
+    .mod-med-user-medicine {
+      position: absolute;
+      left: 64px;
+      top: 140px;
+      width: 16px;
+      height: 26px;
+      z-index: 5;
+    }
+    .mod-med-user-medicine p {
+      position: absolute;
+      inset: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #fff;
+      text-align: center;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    /* user_volume (1:1601) */
+    .mod-med-user-volume {
+      position: absolute;
+      left: 64px;
+      top: 197px;
+      width: 16px;
+      height: 26px;
+      z-index: 5;
+    }
+    .mod-med-user-volume p {
+      position: absolute;
+      inset: 0;
+      font-family: 'Inter', sans-serif;
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #fff;
+      text-align: center;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    /* mod_AI 오버레이 (I1:1602;1:1155) */
+    /* mod_AI 오버레이 - 전체 화면 덮음 (Figma add_AI 구조 그대로) */
+    .mod-med-ai-overlay {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 402px;
+      height: 874px;
+      background: transparent;   /* 배경은 ellipse-bg 마스크가 처리 */
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    /* 마스크 그룹 - 그린 그라디언트 원 배경 (I1:1602;1:1155;1:960) */
+    .mod-med-ellipse-bg {
+      position: absolute;
+      left: -307.9px;
+      top: 398px;
+      width: 1017.985px;
+      height: 926.718px;
+      -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/b2c17788-cb2c-469d-a6bd-19bdb8ee2630');
+      mask-image: url('https://www.figma.com/api/mcp/asset/b2c17788-cb2c-469d-a6bd-19bdb8ee2630');
+      -webkit-mask-size: 402px 874px;
+      mask-size: 402px 874px;
+      -webkit-mask-position: 307.896px -398px;
+      mask-position: 307.896px -398px;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+    .mod-med-ellipse-bg img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+
+    /* 캐릭터 (뿅아리) */
+    /* message_agent: mod_med00_1 화면에서 사용자 STT 결과 표시 */
+    .mod-med-message-agent {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 108px;          /* Active_btn(top 770) 위, z-index 오버레이 위 */
+      z-index: 10;
+      width: 320px;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #ffe682;
+      text-align: center;
+      line-height: 1.4;
+      word-break: keep-all;
+      white-space: normal;
+      pointer-events: none;
+    }
+
+    /* 텍스트 "약 수정을 도와드릴까요?" (I1:1602;1:1155;1:961) */
+    .mod-med-ai-text {
+      position: absolute;
+      left: 53.94px;
+      top: 621.87px;
+      width: 285.838px;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 28.534px;
+      font-weight: 600;
+      color: #ffe682;
+      text-align: center;
+      line-height: normal;
+      -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/b2c17788-cb2c-469d-a6bd-19bdb8ee2630');
+      mask-image: url('https://www.figma.com/api/mcp/asset/b2c17788-cb2c-469d-a6bd-19bdb8ee2630');
+      -webkit-mask-size: 402px 874px;
+      mask-size: 402px 874px;
+      -webkit-mask-position: -53.938px -621.869px;
+      mask-position: -53.938px -621.869px;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+
+    /* ── Mistake 오버레이 (1:1140) ── */
+    .mistake-overlay {
+      position: absolute !important;
+      inset: 0 !important;
+      z-index: 20;
+    }
+    .mistake-ellipse-bg {
+      position: absolute;
+      left: -307px;
+      top: 393px;
+      width: 1015px;
+      height: 924px;
+      -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/9dae8559-ba6a-4e63-93f7-69ab6108e228');
+      mask-image: url('https://www.figma.com/api/mcp/asset/9dae8559-ba6a-4e63-93f7-69ab6108e228');
+      -webkit-mask-size: 402px 874px;
+      mask-size: 402px 874px;
+      -webkit-mask-position: 307px -393px;
+      mask-position: 307px -393px;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+    .mistake-ellipse-bg img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+    .mistake-chara {
+      position: absolute;
+      left: 122px;
+      top: 728.97px;
+      width: 155.001px;
+      height: 201.971px;
+      -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/9dae8559-ba6a-4e63-93f7-69ab6108e228');
+      mask-image: url('https://www.figma.com/api/mcp/asset/9dae8559-ba6a-4e63-93f7-69ab6108e228');
+      -webkit-mask-size: 402px 874px;
+      mask-size: 402px 874px;
+      -webkit-mask-position: -122px -728.969px;
+      mask-position: -122px -728.969px;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+    .mistake-chara img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+    }
+    .mistake-text {
+      position: absolute;
+      left: 82px;
+      top: 610.41px;
+      width: 236px;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: #ffe682;
+      text-align: center;
+      line-height: 1.3;
+      -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/9dae8559-ba6a-4e63-93f7-69ab6108e228');
+      mask-image: url('https://www.figma.com/api/mcp/asset/9dae8559-ba6a-4e63-93f7-69ab6108e228');
+      -webkit-mask-size: 402px 874px;
+      mask-size: 402px 874px;
+      -webkit-mask-position: -82px -610.408px;
+      mask-position: -82px -610.408px;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+
+    /* mod_med01 시간 표시 텍스트 (Figma mod_med00 medication_time 기준: left:9px, top:308px, h:64px) */
+    .mod-med01-time-text {
+      position: absolute;
+      left: 9px;
+      top: 298px;
+      width: 387px;
+      height: 64px;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      line-height: 64px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    /* ── mod_med01 주기 버튼 오버레이 ── */
+    /* Figma 스크린샷 기준: 주기 요일 행 top≈640px, 버튼 width≈36px height≈36px, gap≈8px, 7개 */
+    .mod-med01-cycle-wrap {
+      position: absolute;
+      top: 636px;
+      left: 14px;
+      width: 374px;
+      height: 36px;
+      display: flex;
+      gap: 7px;
+      z-index: 30;
+      pointer-events: none;
+    }
+    .mod-med01-cycle-btn {
+      flex: 1;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: #3a3a3c;   /* 비활성: 회색 */
+      transition: background 0.15s;
+    }
+    .mod-med01-cycle-btn.on {
+      background: #328a4e;   /* 활성: 초록 */
+    }
+
+    /* 주기 발화 STT 텍스트 표시 */
+    .mod-med01-cycle-message {
+      position: absolute;
+      left: 14px;
+      top: 682px;
+      width: 374px;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      color: #9e9e9e;
+      text-align: center;
+      line-height: 1.4;
+      white-space: normal;
+      word-break: keep-all;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    /* mod_med01_1 message_agent */
+    .mod-med01-1-message {
+      position: absolute;
+      left: 53.94px;
+      top: 560px;
+      width: 285.838px;
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: #ffe682;
+      text-align: center;
+      line-height: 1.4;
+      word-break: keep-all;
+      white-space: normal;
+      pointer-events: none;
+      z-index: 30;
+      -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/3fa32203-ae48-4c3a-b9d6-f4a21eb37480');
+      mask-image: url('https://www.figma.com/api/mcp/asset/3fa32203-ae48-4c3a-b9d6-f4a21eb37480');
+      -webkit-mask-size: 402px 874px;
+      mask-size: 402px 874px;
+      -webkit-mask-position: -53.938px -560px;
+      mask-position: -53.938px -560px;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+
+    /* ── mod_med00 직접 편집 뷰 ── */
+    /* mod_med00에서 user_medicine/volume: rect 너비(323px)에 맞게 확장 */
+    #screen-mod-med00 .mod-med-user-medicine {
+      width: 280px;
+      height: 54px;
+      overflow: visible;
+    }
+    #screen-mod-med00 .mod-med-user-volume {
+      width: 280px;
+      height: 46px;
+      overflow: visible;
+    }
+    #screen-mod-med00 .mod-med-user-medicine p,
+    #screen-mod-med00 .mod-med-user-volume p {
+      position: absolute;
+      inset: 0;
+      text-align: left;
+      padding-left: 8px;
+      line-height: 1;
+      white-space: normal;
+      word-break: break-all;
+      overflow: visible;
+      display: flex;
+      align-items: center;
+    }
+    /* mod_med00 주기 버튼: pointer-events 활성화 */
+    #screen-mod-med00 .mod-med01-cycle-wrap {
+      pointer-events: auto;
+    }
+      position: absolute;
+      inset: 0;
+      font-family: 'Inter', 'Pretendard', sans-serif;
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #fff;
+      text-align: left;
+      padding-left: 8px;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .mod-med00-field-input {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      border: none;
+      outline: 2px solid #328a4e;
+      border-radius: 6px;
+      font-family: 'Inter', 'Pretendard', sans-serif;
+      font-size: 18.588px;
+      font-weight: 500;
+      color: #fff;
+      padding: 0 8px;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    /* 시간 클릭 영역 */
+    .mod-med00-time-area {
+      position: absolute;
+      left: 9px;
+      top: 282px;
+      width: 387px;
+      height: 80px;
+      z-index: 31;
+    }
+    .mod-med00-time-display {
+      font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      line-height: 80px;
+      white-space: nowrap;
+    }
+    /* 시간 picker 팝업 */
+    .mod-med00-time-picker {
+      position: absolute;
+      left: 9px;
+      top: 246px;
+      width: 384px;
+      background: #1c1c1e;
+      border-radius: 14px;
+      padding: 16px 12px 12px;
+      z-index: 50;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
+    .mod-med00-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+    }
+    .mod-med00-ampm-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mod-med00-ampm-btn {
+      background: #2c2c2e;
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+    .mod-med00-ampm-btn.selected {
+      background: #328a4e;
+      color: #ffe682;
+    }
+    .mod-med00-sel {
+      background: #2c2c2e;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 6px 8px;
+      text-align: center;
+      width: 64px;
+      cursor: pointer;
+    }
+    .mod-med00-picker-sep {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .mod-med00-confirm-btn {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      background: #328a4e;
+      border: none;
+      border-radius: 10px;
+      color: #ffe682;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 10px 0;
+      cursor: pointer;
+    }
+    .mod-med00-confirm-btn:active { opacity: 0.8; }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       HOME 화면 (1:452)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-home" class="screen active-screen" data-node-id="1:452">
+
+    <!-- footer (1:453) -->
+    <div class="footer" data-node-id="1:453">
+      <div class="footer-bg"></div>
+      <div class="footer-person" data-node-id="1:454-person">
+        <img src="https://www.figma.com/api/mcp/asset/17ce3e7a-95b5-4b61-859f-5ca569da5050" alt="" />
+        <p>프로필</p>
+      </div>
+      <div class="footer-heart" data-node-id="1:454-heart">
+        <img src="https://www.figma.com/api/mcp/asset/dc8fe58d-d33f-4c16-b446-d75e5c6c481b" alt="" />
+        <p>알림</p>
+      </div>
+    </div>
+
+    <!-- assistantBtn (1:454) -->
+    <div class="assistant-btn" id="btn-assistant-home" data-node-id="1:454">
+      <img class="btn-bg" src="https://www.figma.com/api/mcp/asset/c16e9921-beb9-499b-a01e-5d25bc8e342b" alt="" />
+      <div class="btn-inner">
+        <div class="chick-img">
+          <img src="https://www.figma.com/api/mcp/asset/4a1d6cdb-89d9-40af-9bfc-9894f5b793a4" alt="" />
+        </div>
+        <p>aI</p>
+      </div>
+    </div>
+
+    <!-- day (1:455) -->
+    <div class="day-label" data-node-id="1:455">
+      <p>2026년 5월</p>
+    </div>
+
+    <!-- date_bar (1:457) -->
+    <div class="date-bar" data-node-id="1:457">
+      <img src="https://www.figma.com/api/mcp/asset/ae67f3e2-766f-4db4-8a6f-cee9d9ec5ecb" alt="" />
+    </div>
+
+    <!-- today_r (1:464) -->
+    <div class="today-r" data-node-id="1:464"><div class="today-r-bg"></div></div>
+
+    <!-- today_e (1:463) -->
+    <div class="today-e" data-node-id="1:463">
+      <img src="https://www.figma.com/api/mcp/asset/87083fdf-b44e-4126-8b6a-40b305802ddf" alt="" />
+    </div>
+
+    <!-- process 일 10 (1:469) -->
+    <div class="process" style="left:18px;top:108px;" data-node-id="1:469">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/6ca2aad4-b599-4009-a509-b6212b490126" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/944c092b-2a93-4714-b5bc-41d3714a0257" alt="" /></div>
+      <span class="day-txt">일</span>
+      <span class="date-num">10</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/a20f23c5-25b7-48ee-b445-4124cefc5f09" alt="" /></div>
+    </div>
+
+    <!-- process 월 11 (1:459) -->
+    <div class="process" style="left:74px;top:108px;" data-node-id="1:459">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/6ca2aad4-b599-4009-a509-b6212b490126" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/944c092b-2a93-4714-b5bc-41d3714a0257" alt="" /></div>
+      <span class="day-txt">월</span>
+      <span class="date-num">11</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/a20f23c5-25b7-48ee-b445-4124cefc5f09" alt="" /></div>
+    </div>
+
+    <!-- process 화 12 (1:461) -->
+    <div class="process" style="left:128px;top:108px;" data-node-id="1:461">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/6ca2aad4-b599-4009-a509-b6212b490126" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/944c092b-2a93-4714-b5bc-41d3714a0257" alt="" /></div>
+      <span class="day-txt">화</span>
+      <span class="date-num">12</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/a20f23c5-25b7-48ee-b445-4124cefc5f09" alt="" /></div>
+    </div>
+
+    <!-- process 수 13 (1:462) -->
+    <div class="process" style="left:183px;top:108px;" data-node-id="1:462">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/6ca2aad4-b599-4009-a509-b6212b490126" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/944c092b-2a93-4714-b5bc-41d3714a0257" alt="" /></div>
+      <span class="day-txt">수</span>
+      <span class="date-num">13</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/a20f23c5-25b7-48ee-b445-4124cefc5f09" alt="" /></div>
+    </div>
+
+    <!-- process 오늘 14 (1:466) -->
+    <div class="process" style="left:239px;top:108px;" data-node-id="1:466">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/6ca2aad4-b599-4009-a509-b6212b490126" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/944c092b-2a93-4714-b5bc-41d3714a0257" alt="" /></div>
+      <span class="day-txt">오늘</span>
+      <span class="date-num">14</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/a20f23c5-25b7-48ee-b445-4124cefc5f09" alt="" /></div>
+    </div>
+
+    <!-- process 금 15 (1:467) -->
+    <div class="process" style="left:294px;top:108px;" data-node-id="1:467">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/6ca2aad4-b599-4009-a509-b6212b490126" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/944c092b-2a93-4714-b5bc-41d3714a0257" alt="" /></div>
+      <span class="day-txt">금</span>
+      <span class="date-num">15</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/a20f23c5-25b7-48ee-b445-4124cefc5f09" alt="" /></div>
+    </div>
+
+    <!-- process 토 16 (1:468) -->
+    <div class="process" style="left:349px;top:108px;" data-node-id="1:468">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/6ca2aad4-b599-4009-a509-b6212b490126" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/944c092b-2a93-4714-b5bc-41d3714a0257" alt="" /></div>
+      <span class="day-txt">토</span>
+      <span class="date-num">16</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/a20f23c5-25b7-48ee-b445-4124cefc5f09" alt="" /></div>
+    </div>
+
+    <!-- medication_time (1:470) -->
+    <div class="medication-time" data-node-id="1:470"><p>오후 0:00</p></div>
+
+    <!-- medication line (1:472) -->
+    <div class="medication-line" data-node-id="1:472">
+      <img src="https://www.figma.com/api/mcp/asset/7044d361-a580-4914-940b-0bb9d8ad916f" alt="" />
+    </div>
+
+    <!-- medication_alert (1:474) -->
+    <div class="medication-alert" data-node-id="1:474">
+      <div class="medication-alert-bg"></div>
+      <span class="days-txt">일 월 화 수 목 금 토</span>
+      <span class="medicine-name">약 이름</span>
+      <span class="dosage-txt">1mg</span>
+    </div>
+
+    <!-- state off (1:475) -->
+    <div class="state-off" data-node-id="1:475">
+      <div class="state-off-bg"></div>
+      <p>완료</p>
+      <div class="ellipse">
+        <img src="https://www.figma.com/api/mcp/asset/99b968c6-65b7-44f1-95ca-f114e2c0dfae" alt="" />
+      </div>
+    </div>
+
+    <!-- plusBtn (1:460) -->
+    <div class="plus-btn" data-node-id="1:460">
+      <div class="plus-btn-bg"></div>
+      <div class="plus-icon">
+        <img src="https://www.figma.com/api/mcp/asset/ed739d4a-655c-478d-a47c-05b80056a8bf" alt="" />
+      </div>
+    </div>
+
+  </div><!-- /screen-home -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       READY 화면 (1:487)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-ready" class="screen" data-node-id="1:487">
+
+    <!-- footer (1:488) -->
+    <div class="footer" data-node-id="1:488">
+      <div class="footer-bg"></div>
+      <div class="footer-person">
+        <img src="https://www.figma.com/api/mcp/asset/a003ca62-0240-48de-aaf9-e5c6a4b01dda" alt="" />
+        <p>프로필</p>
+      </div>
+      <div class="footer-heart">
+        <img src="https://www.figma.com/api/mcp/asset/6137a9ef-f5f9-4901-80ec-b5517e4638d1" alt="" />
+        <p>알림</p>
+      </div>
+    </div>
+
+    <!-- day (1:489) -->
+    <div class="day-label" data-node-id="1:489"><p>2026년 5월</p></div>
+
+    <!-- date_bar (1:490) -->
+    <div class="date-bar" data-node-id="1:490">
+      <img src="https://www.figma.com/api/mcp/asset/08d42caf-fdd9-42eb-948c-87a82b35b7a4" alt="" />
+    </div>
+
+    <!-- today_r (1:496) -->
+    <div class="today-r" data-node-id="1:496"><div class="today-r-bg"></div></div>
+
+    <!-- today_e (1:495) -->
+    <div class="today-e" data-node-id="1:495">
+      <img src="https://www.figma.com/api/mcp/asset/10a62462-6f83-43db-bcdb-198d9648efec" alt="" />
+    </div>
+
+    <!-- process 일 29 (1:500 → Process comp) -->
+    <div class="process" style="left:18px;top:108px;" data-node-id="1:500">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/50239a47-b6d9-4c8f-b31d-a33e35c62093" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/09fc440c-f705-4c2f-a0b4-6f920ddd0370" alt="" /></div>
+      <span class="day-txt">일</span>
+      <span class="date-num">29</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/9e8a5410-861f-4f94-a5f8-2a8ffd85ed9f" alt="" /></div>
+    </div>
+
+    <!-- process 월 30 (1:491) -->
+    <div class="process" style="left:74px;top:108px;" data-node-id="1:491">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/50239a47-b6d9-4c8f-b31d-a33e35c62093" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/09fc440c-f705-4c2f-a0b4-6f920ddd0370" alt="" /></div>
+      <span class="day-txt">월</span>
+      <span class="date-num">30</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/9e8a5410-861f-4f94-a5f8-2a8ffd85ed9f" alt="" /></div>
+    </div>
+
+    <!-- process 화 31 (1:493) -->
+    <div class="process" style="left:128px;top:108px;" data-node-id="1:493">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/50239a47-b6d9-4c8f-b31d-a33e35c62093" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/09fc440c-f705-4c2f-a0b4-6f920ddd0370" alt="" /></div>
+      <span class="day-txt">화</span>
+      <span class="date-num">31</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/9e8a5410-861f-4f94-a5f8-2a8ffd85ed9f" alt="" /></div>
+    </div>
+
+    <!-- process 수 1 (1:494) -->
+    <div class="process" style="left:183px;top:108px;" data-node-id="1:494">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/50239a47-b6d9-4c8f-b31d-a33e35c62093" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/09fc440c-f705-4c2f-a0b4-6f920ddd0370" alt="" /></div>
+      <span class="day-txt">수</span>
+      <span class="date-num">1</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/9e8a5410-861f-4f94-a5f8-2a8ffd85ed9f" alt="" /></div>
+    </div>
+
+    <!-- process 오늘 2 (1:497) -->
+    <div class="process" style="left:239px;top:108px;" data-node-id="1:497">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/50239a47-b6d9-4c8f-b31d-a33e35c62093" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/09fc440c-f705-4c2f-a0b4-6f920ddd0370" alt="" /></div>
+      <span class="day-txt">오늘</span>
+      <span class="date-num">2</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/9e8a5410-861f-4f94-a5f8-2a8ffd85ed9f" alt="" /></div>
+    </div>
+
+    <!-- process 금 3 (1:498) -->
+    <div class="process" style="left:294px;top:108px;" data-node-id="1:498">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/50239a47-b6d9-4c8f-b31d-a33e35c62093" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/09fc440c-f705-4c2f-a0b4-6f920ddd0370" alt="" /></div>
+      <span class="day-txt">금</span>
+      <span class="date-num">3</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/9e8a5410-861f-4f94-a5f8-2a8ffd85ed9f" alt="" /></div>
+    </div>
+
+    <!-- process 토 4 (1:499) -->
+    <div class="process" style="left:349px;top:108px;" data-node-id="1:499">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/50239a47-b6d9-4c8f-b31d-a33e35c62093" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/09fc440c-f705-4c2f-a0b4-6f920ddd0370" alt="" /></div>
+      <span class="day-txt">토</span>
+      <span class="date-num">4</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/9e8a5410-861f-4f94-a5f8-2a8ffd85ed9f" alt="" /></div>
+    </div>
+
+    <!-- medication_time (1:501) -->
+    <div class="medication-time" data-node-id="1:501"><p>오후 0:00</p></div>
+
+    <!-- medication line (1:502) -->
+    <div class="medication-line" data-node-id="1:502">
+      <img src="https://www.figma.com/api/mcp/asset/02d7ddf3-eb87-48b6-bd4b-4980df3eb57a" alt="" />
+    </div>
+
+    <!-- medication_alert (1:503) -->
+    <div class="medication-alert" data-node-id="1:503">
+      <div class="medication-alert-bg"></div>
+      <span class="days-txt">일 월 화 수 목 금 토</span>
+      <span class="medicine-name">약 이름</span>
+      <span class="dosage-txt">1mg</span>
+    </div>
+
+    <!-- state off (1:504) -->
+    <div class="state-off" data-node-id="1:504">
+      <div class="state-off-bg"></div>
+      <p>완료</p>
+      <div class="ellipse">
+        <img src="https://www.figma.com/api/mcp/asset/db5ce8b5-b9d9-4d96-8328-ef26eb2e47ff" alt="" />
+      </div>
+    </div>
+
+    <!-- plusBtn (1:492) -->
+    <div class="plus-btn" data-node-id="1:492">
+      <div class="plus-btn-bg"></div>
+      <div class="plus-icon">
+        <img src="https://www.figma.com/api/mcp/asset/51b8008b-ee9e-410f-bf15-62c0632a1931" alt="" />
+      </div>
+    </div>
+
+    <!-- bg_black30 (1:505) -->
+    <div class="bg-black30" data-node-id="1:505">
+      <div class="bg-black30-inner"></div>
+    </div>
+
+    <!-- agent_txt (1:508) -->
+    <div class="agent-txt-ready" data-node-id="1:508">
+      <p>AI를 활성화 하시려면<br>버튼을 한 번 더 눌러주세요</p>
+    </div>
+
+    <!-- assitantBtn2 (1:507) -->
+    <div class="assistant-btn2" id="btn-assistant2-ready" data-node-id="1:507">
+      <div class="btn2-bg">
+        <img src="https://www.figma.com/api/mcp/asset/ac191177-389b-4d30-8939-31a8d3915803" alt="" />
+      </div>
+      <div class="btn2-inner">
+        <div class="chick2-img">
+          <img src="https://www.figma.com/api/mcp/asset/a3a6537a-a035-4e86-bea6-d1d53a1f6323" alt="" />
+        </div>
+        <p>aI</p>
+      </div>
+    </div>
+
+    <!-- 배경 클릭 → home 으로 (btn2 제외한 영역) -->
+    <div class="ready-bg-tap" id="ready-bg-tap"></div>
+
+  </div><!-- /screen-ready -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       ACTIVE 화면 (1:510)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-active" class="screen" data-node-id="1:510">
+
+    <!-- footer (1:511) -->
+    <div class="footer" data-node-id="1:511">
+      <div class="footer-bg"></div>
+      <div class="footer-person">
+        <img src="https://www.figma.com/api/mcp/asset/7f297647-1c77-4b22-98f7-157a613b1eeb" alt="" />
+        <p>프로필</p>
+      </div>
+      <div class="footer-heart">
+        <img src="https://www.figma.com/api/mcp/asset/89b5a734-2c2c-4a92-a65e-de1652a94764" alt="" />
+        <p>알림</p>
+      </div>
+    </div>
+
+    <!-- day (1:512) -->
+    <div class="day-label" data-node-id="1:512"><p>2026년 5월</p></div>
+
+    <!-- date_bar (1:513) -->
+    <div class="date-bar" data-node-id="1:513">
+      <img src="https://www.figma.com/api/mcp/asset/cee0140a-b151-4f54-bb56-b9a82ed24be9" alt="" />
+    </div>
+
+    <!-- today_r (1:519) -->
+    <div class="today-r" data-node-id="1:519"><div class="today-r-bg"></div></div>
+
+    <!-- today_e (1:518) -->
+    <div class="today-e" data-node-id="1:518">
+      <img src="https://www.figma.com/api/mcp/asset/ecbf54cd-ed08-4288-a83c-cdede942398a" alt="" />
+    </div>
+
+    <!-- process 일 29 (1:523) -->
+    <div class="process" style="left:18px;top:108px;" data-node-id="1:523">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/93b946aa-8525-4735-bd78-f70c84a36f66" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/66fa8987-e377-4797-b736-b59e1725766c" alt="" /></div>
+      <span class="day-txt">일</span>
+      <span class="date-num">29</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/03a3b1c7-1daa-4613-98be-ed5aa1015805" alt="" /></div>
+    </div>
+
+    <!-- process 월 30 (1:514) -->
+    <div class="process" style="left:74px;top:108px;" data-node-id="1:514">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/93b946aa-8525-4735-bd78-f70c84a36f66" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/66fa8987-e377-4797-b736-b59e1725766c" alt="" /></div>
+      <span class="day-txt">월</span>
+      <span class="date-num">30</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/03a3b1c7-1daa-4613-98be-ed5aa1015805" alt="" /></div>
+    </div>
+
+    <!-- process 화 31 (1:516) -->
+    <div class="process" style="left:128px;top:108px;" data-node-id="1:516">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/93b946aa-8525-4735-bd78-f70c84a36f66" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/66fa8987-e377-4797-b736-b59e1725766c" alt="" /></div>
+      <span class="day-txt">화</span>
+      <span class="date-num">31</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/03a3b1c7-1daa-4613-98be-ed5aa1015805" alt="" /></div>
+    </div>
+
+    <!-- process 수 1 (1:517) -->
+    <div class="process" style="left:183px;top:108px;" data-node-id="1:517">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/93b946aa-8525-4735-bd78-f70c84a36f66" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/66fa8987-e377-4797-b736-b59e1725766c" alt="" /></div>
+      <span class="day-txt">수</span>
+      <span class="date-num">1</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/03a3b1c7-1daa-4613-98be-ed5aa1015805" alt="" /></div>
+    </div>
+
+    <!-- process 오늘 2 (1:520) -->
+    <div class="process" style="left:239px;top:108px;" data-node-id="1:520">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/93b946aa-8525-4735-bd78-f70c84a36f66" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/66fa8987-e377-4797-b736-b59e1725766c" alt="" /></div>
+      <span class="day-txt">오늘</span>
+      <span class="date-num">2</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/03a3b1c7-1daa-4613-98be-ed5aa1015805" alt="" /></div>
+    </div>
+
+    <!-- process 금 3 (1:521) -->
+    <div class="process" style="left:294px;top:108px;" data-node-id="1:521">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/93b946aa-8525-4735-bd78-f70c84a36f66" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/66fa8987-e377-4797-b736-b59e1725766c" alt="" /></div>
+      <span class="day-txt">금</span>
+      <span class="date-num">3</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/03a3b1c7-1daa-4613-98be-ed5aa1015805" alt="" /></div>
+    </div>
+
+    <!-- process 토 4 (1:522) -->
+    <div class="process" style="left:349px;top:108px;" data-node-id="1:522">
+      <div class="p-e"><img src="https://www.figma.com/api/mcp/asset/93b946aa-8525-4735-bd78-f70c84a36f66" alt="" /></div>
+      <div class="p-null"><img src="https://www.figma.com/api/mcp/asset/66fa8987-e377-4797-b736-b59e1725766c" alt="" /></div>
+      <span class="day-txt">토</span>
+      <span class="date-num">4</span>
+      <div class="process-e"><img src="https://www.figma.com/api/mcp/asset/03a3b1c7-1daa-4613-98be-ed5aa1015805" alt="" /></div>
+    </div>
+
+    <!-- medication_time (1:524) -->
+    <div class="medication-time" data-node-id="1:524"><p>오후 0:00</p></div>
+
+    <!-- medication line (1:525) -->
+    <div class="medication-line" data-node-id="1:525">
+      <img src="https://www.figma.com/api/mcp/asset/2e11319a-944c-4e6a-bd3b-b8328285ffc8" alt="" />
+    </div>
+
+    <!-- medication_alert (1:526) -->
+    <div class="medication-alert" data-node-id="1:526">
+      <div class="medication-alert-bg"></div>
+      <span class="days-txt">일 월 화 수 목 금 토</span>
+      <span class="medicine-name">약 이름</span>
+      <span class="dosage-txt">1mg</span>
+    </div>
+
+    <!-- state off (1:527) -->
+    <div class="state-off" data-node-id="1:527">
+      <div class="state-off-bg"></div>
+      <p>완료</p>
+      <div class="ellipse">
+        <img src="https://www.figma.com/api/mcp/asset/d4480b78-1da9-40d4-9940-4f5935de241d" alt="" />
+      </div>
+    </div>
+
+    <!-- plusBtn (1:515) -->
+    <div class="plus-btn" data-node-id="1:515">
+      <div class="plus-btn-bg"></div>
+      <div class="plus-icon">
+        <img src="https://www.figma.com/api/mcp/asset/3b014659-9cfb-4a23-9668-a97eb1956661" alt="" />
+      </div>
+    </div>
+
+    <!-- bg_black30 (1:528) -->
+    <div class="bg-black30" data-node-id="1:528">
+      <div class="bg-black30-inner"></div>
+    </div>
+
+    <!-- AI_y (1:529) -->
+    <div class="ai-y" data-node-id="1:529">
+      <img src="https://www.figma.com/api/mcp/asset/f9c69a42-77ec-408f-be47-08558fb0e07d" alt="" />
+      <div class="agent-txt-active" data-node-id="I1:531;1:509">
+        <p id="active-agent-txt">안녕하세요.<br>무엇을 도와드릴까요?</p>
+      </div>
+    </div>
+
+    <!-- Survant (1:532) -->
+    <div class="survant"  data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+
+    <!-- STT 마이크 버튼 (active 화면 전용) -->
+    <button class="stt-mic-btn" id="stt-mic-btn" title="마이크">
+      <svg id="stt-icon-mic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm6.25 6a1 1 0 0 1 .993.883L19.25 10a7.25 7.25 0 0 1-6.25 7.195V19h2a1 1 0 0 1 0 2h-6a1 1 0 0 1 0-2h2v-1.805A7.25 7.25 0 0 1 4.75 10a1 1 0 0 1 2 0 5.25 5.25 0 0 0 10.5 0 1 1 0 0 1 1-1z"/>
+      </svg>
+      <svg id="stt-icon-stop" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+        <rect x="6" y="6" width="12" height="12" rx="2"/>
+      </svg>
+    </button>
+
+  </div><!-- /screen-active -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED00_1 화면 (1:1594)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med00-1" class="screen" data-node-id="1:1594" style="background:#e3fae4;">
+
+    <!-- 배경 이미지 (1:1595) -->
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/8f330416-4663-4e2b-89fd-7805caf16e98" alt="" />
+    </div>
+
+    <!-- Rectangle 240654684 (1:1596) -->
+    <div class="mod-med-rect1" data-node-id="1:1596"></div>
+
+    <!-- Rectangle 240654685 (1:1597) -->
+    <div class="mod-med-rect2" data-node-id="1:1597"></div>
+
+    <!-- Rectangle 240654683 (1:1598) -->
+    <div class="mod-med-rect3" data-node-id="1:1598"></div>
+
+    <!-- Active_btn (1:1599) -->
+    <div class="mod-med-active-btn" data-node-id="1:1599">
+      <img src="https://www.figma.com/api/mcp/asset/3ff60d07-176c-404f-9db4-49f55a77db28" alt="" />
+    </div>
+
+    <!-- user_medicine (1:1600) -->
+    <div class="mod-med-user-medicine" data-node-id="1:1600">
+      <p>...</p>
+    </div>
+
+    <!-- user_volume (1:1601) -->
+    <div class="mod-med-user-volume" data-node-id="1:1601">
+      <p>...</p>
+    </div>
+
+    <!-- mod_AI 오버레이 (1:1602) -->
+    <div class="mod-med-ai-overlay" data-node-id="1:1602">
+
+      <!-- 그린 그라디언트 원 배경 마스크 (I1:1602;1:1155;1:960) -->
+      <div class="mod-med-ellipse-bg" data-node-id="I1:1602;1:1155;1:960">
+        <img src="https://www.figma.com/api/mcp/asset/b4dc4112-d2f8-44bf-a702-1be3972926f0" alt="" />
+      </div>
+
+      <!-- 캐릭터 뿅아리 (1:240) -->
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+
+      <!-- 텍스트 (I1:1602;1:1155;1:961) -->
+      <p class="mod-med-ai-text" data-node-id="I1:1602;1:1155;1:961">약 수정을 도와드릴까요?</p>
+
+    </div>
+
+    <!-- message_agent: 사용자 STT 결과 표시 -->
+    <p class="mod-med-message-agent" id="mod-med-message-agent">듣고 있어요...</p>
+
+  </div><!-- /screen-mod-med00-1 -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED00_1NO 화면 (1:1966)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med00-1no" class="screen" data-node-id="1:1966" style="background:#e3fae4;">
+
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/937922e0-7eb1-493c-849b-f82d86fda07a" alt="" />
+    </div>
+    <div class="mod-med-rect1" data-node-id="1:1968"></div>
+    <div class="mod-med-rect2" data-node-id="1:1969"></div>
+    <div class="mod-med-rect3" data-node-id="1:1970"></div>
+    <div class="mod-med-active-btn" data-node-id="1:1971">
+      <img src="https://www.figma.com/api/mcp/asset/b271075f-d15d-4f20-a13f-9ce17a3ae4a8" alt="" />
+    </div>
+    <div class="mod-med-user-medicine" data-node-id="1:1972"><p>...</p></div>
+    <div class="mod-med-user-volume" data-node-id="1:1973"><p>...</p></div>
+
+    <div class="mod-med-ai-overlay" data-node-id="1:1974">
+      <div class="mod-med-ellipse-bg" data-node-id="I1:1974;1:1155;1:960"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/aa98cfef-4ed8-4087-944d-bd4653acac07');mask-image:url('https://www.figma.com/api/mcp/asset/aa98cfef-4ed8-4087-944d-bd4653acac07');">
+        <img src="https://www.figma.com/api/mcp/asset/4421b92e-505c-4dcf-9944-1540a05cc88d" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/aa98cfef-4ed8-4087-944d-bd4653acac07');mask-image:url('https://www.figma.com/api/mcp/asset/aa98cfef-4ed8-4087-944d-bd4653acac07');"
+         data-node-id="I1:1974;1:1155;1:961">제가 필요할 땐<br>아래 버튼으로 불러주세요</p>
+    </div>
+
+  </div><!-- /screen-mod-med00-1no -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED00 화면 (1:331) - 직접 편집 뷰
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med00" class="screen" data-node-id="1:331" style="background:#000;">
+
+    <!-- 배경 이미지 -->
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/9baeff7c-c5d1-47e7-8a61-ca020da482c4" alt="" />
+    </div>
+
+    <!-- rect1: user_medicine 배경 (left:64 top:126 w:323 h:54) -->
+    <div class="mod-med-rect1" data-node-id="1:1118"></div>
+    <!-- rect2: user_volume 배경 (left:64 top:187 w:323 h:46) -->
+    <div class="mod-med-rect2" data-node-id="1:1120"></div>
+    <!-- rect3: 하단 바 -->
+    <div class="mod-med-rect3" data-node-id="1:334"></div>
+
+    <!-- Active_btn (left:314 top:770) → 누르면 mod_med00_1로 -->
+    <div class="mod-med-active-btn" id="mod-med00-active-btn" data-node-id="1:1205" style="cursor:pointer;">
+      <img src="https://www.figma.com/api/mcp/asset/8b595b0f-4df3-4804-82db-efc12064e05d" alt="" />
+    </div>
+
+    <!-- user_medicine: 터치하면 inline 편집 -->
+    <div class="mod-med-user-medicine mod-med00-editable" id="mod-med00-user-medicine-wrap" data-node-id="1:1241" style="cursor:text;">
+      <p id="mod-med00-user-medicine" class="mod-med00-field-text">...</p>
+      <input id="mod-med00-user-medicine-input" class="mod-med00-field-input" style="display:none;" type="text" />
+    </div>
+
+    <!-- user_volume: 터치하면 inline 편집 -->
+    <div class="mod-med-user-volume mod-med00-editable" id="mod-med00-user-volume-wrap" data-node-id="1:1323" style="cursor:text;">
+      <p id="mod-med00-user-volume" class="mod-med00-field-text">...</p>
+      <input id="mod-med00-user-volume-input" class="mod-med00-field-input" style="display:none;" type="text" />
+    </div>
+
+    <!-- 시간 선택 영역 (top:298 / 배경 picker 위에 오버레이) -->
+    <div class="mod-med00-time-area" id="mod-med00-time-area" style="cursor:pointer;">
+      <p id="mod-med00-time-display" class="mod-med00-time-display">오후 0:00</p>
+    </div>
+
+    <!-- 시간 picker 팝업 -->
+    <div id="mod-med00-time-picker" class="mod-med00-time-picker" style="display:none;">
+      <div class="mod-med00-picker-row">
+        <div class="mod-med00-ampm-wrap">
+          <button class="mod-med00-ampm-btn" id="mod-med00-am" data-val="오전">오전</button>
+          <button class="mod-med00-ampm-btn" id="mod-med00-pm" data-val="오후">오후</button>
+        </div>
+        <select id="mod-med00-hour-sel" class="mod-med00-sel">
+          <!-- 1~12 -->
+        </select>
+        <span class="mod-med00-picker-sep">시</span>
+        <select id="mod-med00-min-sel" class="mod-med00-sel">
+          <!-- 0~59 -->
+        </select>
+        <span class="mod-med00-picker-sep">분</span>
+      </div>
+      <button id="mod-med00-time-confirm" class="mod-med00-confirm-btn">확인</button>
+    </div>
+
+    <!-- 주기 버튼 오버레이 (mod_med01과 동일 위치, 클릭 토글 가능) -->
+    <div class="mod-med01-cycle-wrap" id="mod-med00-cycle-wrap">
+      <div class="mod-med01-cycle-btn" id="mod-med00-cycle-일" data-day="일" style="cursor:pointer;">일</div>
+      <div class="mod-med01-cycle-btn" id="mod-med00-cycle-월" data-day="월" style="cursor:pointer;">월</div>
+      <div class="mod-med01-cycle-btn" id="mod-med00-cycle-화" data-day="화" style="cursor:pointer;">화</div>
+      <div class="mod-med01-cycle-btn" id="mod-med00-cycle-수" data-day="수" style="cursor:pointer;">수</div>
+      <div class="mod-med01-cycle-btn" id="mod-med00-cycle-목" data-day="목" style="cursor:pointer;">목</div>
+      <div class="mod-med01-cycle-btn" id="mod-med00-cycle-금" data-day="금" style="cursor:pointer;">금</div>
+      <div class="mod-med01-cycle-btn" id="mod-med00-cycle-토" data-day="토" style="cursor:pointer;">토</div>
+    </div>
+
+  </div><!-- /screen-mod-med00 -->
+
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED01 화면 (1:1326)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med01" class="screen" data-node-id="1:1326" style="background:#e3fae4;">
+
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/731652a7-37ab-486a-894b-50d0d9e054a5" alt="" />
+    </div>
+    <div class="mod-med-rect1" data-node-id="1:1328"></div>
+    <div class="mod-med-rect2" data-node-id="1:1329"></div>
+    <div class="mod-med-rect3" data-node-id="1:1330"></div>
+    <div class="mod-med-active-btn" data-node-id="1:1331">
+      <img src="https://www.figma.com/api/mcp/asset/064277e7-e343-4fe2-8cd7-115065c8aa73" alt="" />
+    </div>
+    <div class="mod-med-user-medicine" data-node-id="1:1332"><p id="mod-med01-user-medicine">...</p></div>
+    <div class="mod-med-user-volume" data-node-id="1:1333"><p id="mod-med01-user-volume">...</p></div>
+
+    <div class="mod-med-ai-overlay" id="mod-med01-ai-overlay" data-node-id="1:1353">
+      <div class="mod-med-ellipse-bg" data-node-id="I1:1353;1:1155;1:960"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/6e323b78-1815-4a03-9e28-79de7ec2c411');mask-image:url('https://www.figma.com/api/mcp/asset/6e323b78-1815-4a03-9e28-79de7ec2c411');">
+        <img src="https://www.figma.com/api/mcp/asset/11d617d7-b094-4af8-8db8-a79a383f0205" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/6e323b78-1815-4a03-9e28-79de7ec2c411');mask-image:url('https://www.figma.com/api/mcp/asset/6e323b78-1815-4a03-9e28-79de7ec2c411');"
+         data-node-id="I1:1353;1:1155;1:961">어떤 부분을<br>수정하시겠어요?</p>
+    </div>
+
+    <!-- 시간 표시 텍스트 (STT로 업데이트) -->
+    <p id="mod-med01-user-time" class="mod-med01-time-text">오후 0:00</p>
+
+    <!-- Mistake 오버레이 (1:1140) - STT 오류 시 mod_AI 대신 표시 -->
+    <div class="mod-med-ai-overlay mistake-overlay" id="mod-med01-mistake-overlay" data-node-id="1:1140" style="display:none;">
+      <!-- 그레이 그라디언트 배경 마스크 -->
+      <div class="mistake-ellipse-bg">
+        <img src="https://www.figma.com/api/mcp/asset/c8c54753-0144-4b9c-84cb-c1861e58d77a" alt="" />
+      </div>
+      <!-- 캐릭터 -->
+      <div class="mistake-chara">
+        <img src="https://www.figma.com/api/mcp/asset/977e3905-8001-4aa8-a984-e7ec39fc955f" alt="" />
+      </div>
+      <!-- 텍스트 -->
+      <p class="mistake-text" data-node-id="1:547">죄송합니다<br>다시 말씀해주세요</p>
+    </div>
+
+
+    <!-- 주기 버튼 오버레이 (STT로 활성화 제어) -->
+    <div class="mod-med01-cycle-wrap" id="mod-med01-cycle-wrap">
+      <div class="mod-med01-cycle-btn" data-day="일" id="cycle-일">일</div>
+      <div class="mod-med01-cycle-btn" data-day="월" id="cycle-월">월</div>
+      <div class="mod-med01-cycle-btn" data-day="화" id="cycle-화">화</div>
+      <div class="mod-med01-cycle-btn" data-day="수" id="cycle-수">수</div>
+      <div class="mod-med01-cycle-btn" data-day="목" id="cycle-목">목</div>
+      <div class="mod-med01-cycle-btn" data-day="금" id="cycle-금">금</div>
+      <div class="mod-med01-cycle-btn" data-day="토" id="cycle-토">토</div>
+    </div>
+
+    <!-- 주기 발화 시 STT 텍스트 표시 (message_agent) -->
+    <p class="mod-med01-cycle-message" id="mod-med01-cycle-message"></p>
+  </div><!-- /screen-mod-med01 -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED02 화면 (1:1368)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med02" class="screen" data-node-id="1:1368" style="background:#e3fae4;">
+
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/e5d50935-ed6a-439c-adb5-30eaae6d088d" alt="" />
+    </div>
+    <div class="mod-med-rect1" data-node-id="1:1370"></div>
+    <div class="mod-med-rect2" data-node-id="1:1371"></div>
+    <div class="mod-med-rect3" data-node-id="1:1372"></div>
+    <div class="mod-med-active-btn" data-node-id="1:1373">
+      <img src="https://www.figma.com/api/mcp/asset/65fe1fd7-4cca-4309-bff4-0b3637967053" alt="" />
+    </div>
+    <div class="mod-med-user-medicine" data-node-id="1:1374"><p id="mod-med02-user-medicine">...</p></div>
+    <div class="mod-med-user-volume" data-node-id="1:1375"><p id="mod-med02-user-volume">...</p></div>
+
+    <div class="mod-med-ai-overlay" data-node-id="1:1376">
+      <div class="mod-med-ellipse-bg" data-node-id="I1:1376;1:1155;1:960"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/ad5d9cd7-44b3-4bdf-8512-11a529d57771');mask-image:url('https://www.figma.com/api/mcp/asset/ad5d9cd7-44b3-4bdf-8512-11a529d57771');">
+        <img src="https://www.figma.com/api/mcp/asset/14c69ecd-51b7-460c-a5d8-5a24546032dd" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/ad5d9cd7-44b3-4bdf-8512-11a529d57771');mask-image:url('https://www.figma.com/api/mcp/asset/ad5d9cd7-44b3-4bdf-8512-11a529d57771');"
+         data-node-id="I1:1376;1:1155;1:961">약 이름을 수정했어요!</p>
+    </div>
+
+  </div><!-- /screen-mod-med02 -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED03 화면 (1:1798)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med03" class="screen" data-node-id="1:1798" style="background:#e3fae4;">
+
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/2ace0413-90bd-41fe-b28d-c78ad189a7c9" alt="" />
+    </div>
+    <div class="mod-med-rect1" data-node-id="1:1800"></div>
+    <div class="mod-med-rect2" data-node-id="1:1801"></div>
+    <div class="mod-med-rect3" data-node-id="1:1802"></div>
+    <div class="mod-med-active-btn" data-node-id="1:1803">
+      <img src="https://www.figma.com/api/mcp/asset/eda0c2e2-581c-4683-8d89-61b757346ad8" alt="" />
+    </div>
+    <div class="mod-med-user-medicine" data-node-id="1:1804"><p id="mod-med03-user-medicine">...</p></div>
+    <div class="mod-med-user-volume" data-node-id="1:1805"><p id="mod-med03-user-volume">...</p></div>
+
+    <div class="mod-med-ai-overlay" data-node-id="1:1806">
+      <div class="mod-med-ellipse-bg" data-node-id="I1:1806;1:1155;1:960"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/eaa32cfb-ce1d-4e84-98b7-b66b4543c9f4');mask-image:url('https://www.figma.com/api/mcp/asset/eaa32cfb-ce1d-4e84-98b7-b66b4543c9f4');">
+        <img src="https://www.figma.com/api/mcp/asset/80d3f600-d094-4a5e-9474-21662594b309" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/eaa32cfb-ce1d-4e84-98b7-b66b4543c9f4');mask-image:url('https://www.figma.com/api/mcp/asset/eaa32cfb-ce1d-4e84-98b7-b66b4543c9f4');"
+         data-node-id="I1:1806;1:1155;1:961">용법, 용량을 수정했어요!</p>
+    </div>
+
+  </div><!-- /screen-mod-med03 -->
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED04 화면 (1:1840)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med04" class="screen" data-node-id="1:1840" style="background:#e3fae4;">
+
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/3c828907-cd7e-4b95-895c-058c48b070fe" alt="" />
+    </div>
+    <div class="mod-med-rect1" data-node-id="1:1842"></div>
+    <div class="mod-med-rect2" data-node-id="1:1843"></div>
+    <div class="mod-med-rect3" data-node-id="1:1844"></div>
+    <div class="mod-med-active-btn" data-node-id="1:1845">
+      <img src="https://www.figma.com/api/mcp/asset/690cdafb-ebe5-4efb-9063-58929c61e273" alt="" />
+    </div>
+    <div class="mod-med-user-medicine" data-node-id="1:1846"><p id="mod-med04-user-medicine">...</p></div>
+    <div class="mod-med-user-volume" data-node-id="1:1847"><p id="mod-med04-user-volume">...</p></div>
+
+    <!-- 시간 표시 오버레이 (mod_med01-user-time 와 동일 위치) -->
+    <p class="mod-med01-time-text" id="mod-med04-user-time">오후 0:00</p>
+
+    <div class="mod-med-ai-overlay" data-node-id="1:1848">
+      <div class="mod-med-ellipse-bg" data-node-id="I1:1848;1:1155;1:960"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/027929e7-f2be-4086-9bbb-fbb06fd06c45');mask-image:url('https://www.figma.com/api/mcp/asset/027929e7-f2be-4086-9bbb-fbb06fd06c45');">
+        <img src="https://www.figma.com/api/mcp/asset/5235245e-9d93-4710-a77c-7cd3a62e8288" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/027929e7-f2be-4086-9bbb-fbb06fd06c45');mask-image:url('https://www.figma.com/api/mcp/asset/027929e7-f2be-4086-9bbb-fbb06fd06c45');"
+         data-node-id="I1:1848;1:1155;1:961">시간을 수정했어요!</p>
+    </div>
+
+  </div><!-- /screen-mod-med04 -->
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED05 화면 (1:1882)
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med05" class="screen" data-node-id="1:1882" style="background:#e3fae4;">
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/4bba020e-2f48-4e64-85a5-c08d5175c3d3" alt="" />
+    </div>
+    <div class="mod-med-rect1" data-node-id="1:1884"></div>
+    <div class="mod-med-rect2" data-node-id="1:1885"></div>
+    <div class="mod-med-rect3" data-node-id="1:1886"></div>
+    <div class="mod-med-active-btn" data-node-id="1:1887">
+      <img src="https://www.figma.com/api/mcp/asset/0bebbac7-8669-495b-8238-d6f656361335" alt="" />
+    </div>
+    <div class="mod-med-user-medicine" data-node-id="1:1888"><p id="mod-med05-user-medicine">...</p></div>
+    <div class="mod-med-user-volume" data-node-id="1:1889"><p id="mod-med05-user-volume">...</p></div>
+
+    <!-- 주기 버튼 오버레이 (mod_med01과 동일 위치/구조, 읽기 전용) -->
+    <div class="mod-med01-cycle-wrap" id="mod-med05-cycle-wrap">
+      <div class="mod-med01-cycle-btn" id="mod-med05-cycle-일">일</div>
+      <div class="mod-med01-cycle-btn" id="mod-med05-cycle-월">월</div>
+      <div class="mod-med01-cycle-btn" id="mod-med05-cycle-화">화</div>
+      <div class="mod-med01-cycle-btn" id="mod-med05-cycle-수">수</div>
+      <div class="mod-med01-cycle-btn" id="mod-med05-cycle-목">목</div>
+      <div class="mod-med01-cycle-btn" id="mod-med05-cycle-금">금</div>
+      <div class="mod-med01-cycle-btn" id="mod-med05-cycle-토">토</div>
+    </div>
+
+    <div class="mod-med-ai-overlay" data-node-id="1:1890">
+      <div class="mod-med-ellipse-bg" data-node-id="I1:1890;1:1155;1:960"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/711ffe44-f234-483b-8bd6-1cd592d46eee');mask-image:url('https://www.figma.com/api/mcp/asset/711ffe44-f234-483b-8bd6-1cd592d46eee');">
+        <img src="https://www.figma.com/api/mcp/asset/82ac14be-53b1-43ac-b7f4-972df4358609" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/711ffe44-f234-483b-8bd6-1cd592d46eee');mask-image:url('https://www.figma.com/api/mcp/asset/711ffe44-f234-483b-8bd6-1cd592d46eee');"
+         data-node-id="I1:1890;1:1155;1:961">주기를 수정했어요!</p>
+    </div>
+  </div><!-- /screen-mod-med05 -->
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED01_1 화면 (1:1410) - "또 어떤 부분을 수정하시겠어요?"
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med01-1" class="screen" data-node-id="1:1410" style="background:#e3fae4;">
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/19b1522b-2865-4b83-822c-4bef6c363871" alt="" />
+    </div>
+    <div class="mod-med-rect1"></div>
+    <div class="mod-med-rect2"></div>
+    <div class="mod-med-rect3"></div>
+    <div class="mod-med-active-btn">
+      <img src="https://www.figma.com/api/mcp/asset/02473a80-f3ad-4421-8b42-1b2a3d2c5122" alt="" />
+    </div>
+    <div class="mod-med-user-medicine"><p id="mod-med01-1-user-medicine">...</p></div>
+    <div class="mod-med-user-volume"><p id="mod-med01-1-user-volume">...</p></div>
+    <!-- mod_AI 오버레이 -->
+    <div class="mod-med-ai-overlay" id="mod-med01-1-ai-overlay">
+      <div class="mod-med-ellipse-bg"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/3fa32203-ae48-4c3a-b9d6-f4a21eb37480');mask-image:url('https://www.figma.com/api/mcp/asset/3fa32203-ae48-4c3a-b9d6-f4a21eb37480');">
+        <img src="https://www.figma.com/api/mcp/asset/772e2b80-6a9c-4f59-b028-6fee0e7ab49e" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/3fa32203-ae48-4c3a-b9d6-f4a21eb37480');mask-image:url('https://www.figma.com/api/mcp/asset/3fa32203-ae48-4c3a-b9d6-f4a21eb37480');">
+        또 어떤 부분을<br>수정하시겠어요?</p>
+    </div>
+    <!-- Mistake 오버레이 -->
+    <div class="mod-med-ai-overlay mistake-overlay" id="mod-med01-1-mistake-overlay" style="display:none;">
+      <div class="mistake-ellipse-bg">
+        <img src="https://www.figma.com/api/mcp/asset/c8c54753-0144-4b9c-84cb-c1861e58d77a" alt="" />
+      </div>
+      <div class="mistake-chara">
+        <img src="https://www.figma.com/api/mcp/asset/977e3905-8001-4aa8-a984-e7ec39fc955f" alt="" />
+      </div>
+      <p class="mistake-text">죄송합니다<br>다시 말씀해주세요</p>
+    </div>
+    <!-- message_agent: STT 텍스트 표시 -->
+    <p class="mod-med01-1-message" id="mod-med01-1-message"></p>
+  </div><!-- /screen-mod-med01-1 -->
+
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MOD_MED01_2 화면 (1:1494) - "모든 수정을 완료했습니다!"
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <div id="screen-mod-med01-2" class="screen" data-node-id="1:1494" style="background:#e3fae4;">
+    <div class="mod-med-bg">
+      <img src="https://www.figma.com/api/mcp/asset/b235fb58-d8f5-4b73-9070-dede80228a9b" alt="" />
+    </div>
+    <div class="mod-med-rect1"></div>
+    <div class="mod-med-rect2"></div>
+    <div class="mod-med-rect3"></div>
+    <div class="mod-med-active-btn">
+      <img src="https://www.figma.com/api/mcp/asset/692e6ddc-6f14-4ae5-9030-6b6c2e01babb" alt="" />
+    </div>
+    <div class="mod-med-user-medicine"><p id="mod-med01-2-user-medicine">...</p></div>
+    <div class="mod-med-user-volume"><p id="mod-med01-2-user-volume">...</p></div>
+    <!-- 시간 오버레이 -->
+    <p class="mod-med01-time-text" id="mod-med01-2-user-time" style="display:none;"></p>
+    <!-- 주기 버튼 오버레이 -->
+    <div class="mod-med01-cycle-wrap" id="mod-med01-2-cycle-wrap">
+      <div class="mod-med01-cycle-btn" id="mod-med01-2-cycle-일">일</div>
+      <div class="mod-med01-cycle-btn" id="mod-med01-2-cycle-월">월</div>
+      <div class="mod-med01-cycle-btn" id="mod-med01-2-cycle-화">화</div>
+      <div class="mod-med01-cycle-btn" id="mod-med01-2-cycle-수">수</div>
+      <div class="mod-med01-cycle-btn" id="mod-med01-2-cycle-목">목</div>
+      <div class="mod-med01-cycle-btn" id="mod-med01-2-cycle-금">금</div>
+      <div class="mod-med01-cycle-btn" id="mod-med01-2-cycle-토">토</div>
+    </div>
+    <div class="mod-med-ai-overlay">
+      <div class="mod-med-ellipse-bg"
+           style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/252cd1db-d316-47fe-86a1-15d37ffeed27');mask-image:url('https://www.figma.com/api/mcp/asset/252cd1db-d316-47fe-86a1-15d37ffeed27');">
+        <img src="https://www.figma.com/api/mcp/asset/072d9a7e-fdce-42db-a541-c9e4bb9b9f50" alt="" />
+      </div>
+      <div class="mod-med-chara" data-node-id="1:280">
+      <div class="survant-body"><img src="https://www.figma.com/api/mcp/asset/b3f37687-181c-4a2c-a79b-b751a97fe158" alt="" /></div>
+      <div class="survant-eye-l"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-eye-r"><img src="https://www.figma.com/api/mcp/asset/bfab2413-c571-42c4-8977-17e7b3ebef65" alt="" /></div>
+      <div class="survant-ear-r"></div>
+      <div class="survant-ear-la"></div>
+      <div class="survant-ear-lb"></div>
+      <div class="survant-wing-l"><img src="https://www.figma.com/api/mcp/asset/db89f393-76db-4c71-84e5-b3a0a0acaeeb" alt="" /></div>
+      <div class="survant-wing-r"><img src="https://www.figma.com/api/mcp/asset/6280b0ae-94c5-4d18-ba86-61767873415e" alt="" /></div>
+      <div class="survant-feet"><img src="https://www.figma.com/api/mcp/asset/843226f2-c796-4612-92ed-6930a0992928" alt="" /></div>
+      <div class="survant-beak-bg"></div>
+      <div class="survant-beak"><img src="https://www.figma.com/api/mcp/asset/77c5c65a-df41-47ef-9ade-dbc60f3698b9" alt="" /></div>
+    </div>
+      <p class="mod-med-ai-text"
+         style="-webkit-mask-image:url('https://www.figma.com/api/mcp/asset/252cd1db-d316-47fe-86a1-15d37ffeed27');mask-image:url('https://www.figma.com/api/mcp/asset/252cd1db-d316-47fe-86a1-15d37ffeed27');">
+        모든 수정을<br>완료했습니다!</p>
+    </div>
+  </div><!-- /screen-mod-med01-2 -->
+
+</div><!-- /app-container -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  var sttContext = 'active';
+  var DAYS = ['일','월','화','수','목','금','토'];
+
+  /* ── 요일 버튼 활성화 (mod_med01 기준) ── */
+  function setCycleDays(activeDays) {
+    DAYS.forEach(function(d) {
+      var el = document.getElementById('cycle-' + d);
+      if (el) { if (activeDays.indexOf(d) !== -1) el.classList.add('on'); else el.classList.remove('on'); }
+    });
+  }
+  function resetCycleDays() { setCycleDays([]); }
+
+  /* mod_med05 주기 버튼 동기화 */
+  function syncMed05Cycle(days) {
+    DAYS.forEach(function(d) {
+      var el = document.getElementById('mod-med05-cycle-' + d);
+      if (el) { if (days.indexOf(d) !== -1) el.classList.add('on'); else el.classList.remove('on'); }
+    });
+  }
+
+  /* mod_med01_2에 수정된 값 동기화 */
+  function syncMed012Values() {
+    var med = modMed01UserMed.textContent;
+    if (med && med !== '...') document.getElementById('mod-med01-2-user-medicine').textContent = med;
+    var vol = modMed01UserVol.textContent;
+    if (vol && vol !== '...') document.getElementById('mod-med01-2-user-volume').textContent = vol;
+    var timeEl = document.getElementById('mod-med01-2-user-time');
+    var time = modMed01UserTime ? modMed01UserTime.textContent : '';
+    if (time && time !== '오후 0:00') { timeEl.textContent = time; timeEl.style.display = 'block'; }
+    else { timeEl.style.display = 'none'; }
+    DAYS.forEach(function(d) {
+      var src = document.getElementById('cycle-' + d);
+      var dst = document.getElementById('mod-med01-2-cycle-' + d);
+      if (src && dst) { if (src.classList.contains('on')) dst.classList.add('on'); else dst.classList.remove('on'); }
+    });
+  }
+
+  /* ── 화면 전환 ── */
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active-screen'); });
+    document.getElementById(id).classList.add('active-screen');
+
+    if (id === 'screen-active') {
+      sttContext = 'active'; startSTT();
+
+    } else if (id === 'screen-mod-med00-1') {
+      sttContext = 'mod-med00-1';
+      document.getElementById('mod-med-message-agent').textContent = '듣고 있어요...';
+      startSTT();
+
+    } else if (id === 'screen-mod-med01') {
+      var isFirstEntry = (modMed01UserMed.textContent === '...' && modMed01UserVol.textContent === '...');
+      sttContext = 'mod-med01';
+      document.getElementById('mod-med01-mistake-overlay').style.display = 'none';
+      document.getElementById('mod-med01-ai-overlay').style.display      = 'block';
+      // 처음 진입(mod-med00-1에서 넘어온 경우)에만 값 초기화
+      if (isFirstEntry) {
+        modMed01UserMed.textContent  = '...';
+        modMed01UserVol.textContent  = '...';
+        modMed01UserTime.textContent = '오후 0:00';
+        modMed01CycleMsg.textContent = '';
+        resetCycleDays();
+      }
+      startSTT();
+
+    } else if (id === 'screen-mod-med02' || id === 'screen-mod-med03' ||
+               id === 'screen-mod-med04' || id === 'screen-mod-med05') {
+      sttContext = '';
+      stopSTT();
+      setTimeout(function () { showScreen('screen-mod-med01-1'); }, 1500);
+
+    } else if (id === 'screen-mod-med01-1') {
+      sttContext = 'mod-med01-1';
+      document.getElementById('mod-med01-1-mistake-overlay').style.display = 'none';
+      document.getElementById('mod-med01-1-ai-overlay').style.display      = 'block';
+      document.getElementById('mod-med01-1-message').textContent = '';
+      document.getElementById('mod-med01-1-user-medicine').textContent = modMed01UserMed.textContent;
+      document.getElementById('mod-med01-1-user-volume').textContent   = modMed01UserVol.textContent;
+      startSTT();
+
+    } else if (id === 'screen-mod-med01-2') {
+      sttContext = '';
+      stopSTT();
+      syncMed012Values();
+      setTimeout(function () { showScreen('screen-home'); }, 3000);
+
+    } else if (id === 'screen-mod-med00-1no') {
+      sttContext = '';
+      stopSTT();
+      /* 1.5초 후 mod_med00으로 */
+      setTimeout(function () { showScreen('screen-mod-med00'); }, 1500);
+
+    } else if (id === 'screen-mod-med00') {
+      sttContext = '';
+      stopSTT();
+      initMed00Screen();
+
+    } else {
+      sttContext = ''; stopSTT();
+    }
+  }
+
+  /* ── 버튼 이벤트 ── */
+  document.getElementById('btn-assistant-home').addEventListener('click', function () { showScreen('screen-ready'); });
+  document.getElementById('btn-assistant2-ready').addEventListener('click', function (e) { e.stopPropagation(); showScreen('screen-active'); });
+  document.getElementById('ready-bg-tap').addEventListener('click', function () { showScreen('screen-home'); });
+
+  /* ── STT DOM 참조 ── */
+  var activeAgentTxtEl   = document.getElementById('active-agent-txt');
+  var modMedMessageAgent = document.getElementById('mod-med-message-agent');
+  var modMed01UserMed    = document.getElementById('mod-med01-user-medicine');
+  var modMed01UserVol    = document.getElementById('mod-med01-user-volume');
+  var modMed01UserTime   = document.getElementById('mod-med01-user-time');
+  var modMed01CycleMsg   = document.getElementById('mod-med01-cycle-message');
+  var modMed011Msg       = document.getElementById('mod-med01-1-message');
+
+  var recognition      = null;
+  var isListening      = false;
+  var interimBuffer    = '';
+  var silenceTimer     = null;
+  var pendingAfterStop = null;
+  var SILENCE_DELAY    = 1500;
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (SR) {
+    recognition = new SR();
+    recognition.lang           = 'ko-KR';
+    recognition.continuous     = true;
+    recognition.interimResults = true;
+
+    recognition.onresult = function (event) {
+      clearTimeout(silenceTimer);
+      var finalText = '', interimText = '';
+      for (var i = event.resultIndex; i < event.results.length; i++) {
+        var t = event.results[i][0].transcript;
+        if (event.results[i].isFinal) finalText   += t;
+        else                          interimText += t;
+      }
+      if (finalText) interimBuffer += finalText;
+      var dim = interimText ? '<span style="opacity:0.5">' + interimText + '</span>' : '';
+      if      (sttContext === 'active')       activeAgentTxtEl.innerHTML   = interimBuffer + dim;
+      else if (sttContext === 'mod-med00-1')  modMedMessageAgent.innerHTML = interimBuffer + dim;
+      else if (sttContext === 'mod-med01')    updateMed01Display(interimBuffer, interimText);
+      else if (sttContext === 'mod-med01-1')  modMed011Msg.innerHTML       = interimBuffer + dim;
+      if (interimBuffer.trim()) silenceTimer = setTimeout(onSpeechEnd, SILENCE_DELAY);
+    };
+
+    recognition.onstart = function () {
+      isListening = true;
+      if      (sttContext === 'active')      activeAgentTxtEl.innerHTML    = '듣고 있어요...';
+      else if (sttContext === 'mod-med00-1') modMedMessageAgent.textContent = '듣고 있어요...';
+      else if (sttContext === 'mod-med01-1') modMed011Msg.textContent       = '';
+    };
+
+    recognition.onend = function () {
+      isListening = false;
+      if (pendingAfterStop) { var fn = pendingAfterStop; pendingAfterStop = null; fn(); return; }
+      if (interimBuffer.trim()) {
+        onSpeechEnd();
+      } else {
+        if (sttContext === 'active') {
+          activeAgentTxtEl.innerHTML = '안녕하세요.<br>무엇을 도와드릴까요?';
+        } else if (sttContext === 'mod-med00-1') {
+          modMedMessageAgent.textContent = '듣고 있어요...';
+          startSTT();
+        } else if (sttContext === 'mod-med01' || sttContext === 'mod-med01-1') {
+          // 발화 없이 엔진 자연 종료 → 조용히 재시작
+          setTimeout(function () { startSTT(); }, 300);
+        }
+      }
+    };
+
+    recognition.onerror = function (event) {
+      isListening = false;
+      clearTimeout(silenceTimer);
+
+      var err = event.error;
+
+      // 조용히 재시작해야 하는 에러: 말이 없거나 일시적 중단
+      if (err === 'no-speech' || err === 'aborted') {
+        if (sttContext === 'active') {
+          activeAgentTxtEl.innerHTML = '안녕하세요.<br>무엇을 도와드릴까요?';
+        }
+        // mod-med01 계열이면 현재 필드 초기화 없이 조용히 재시작
+        if (sttContext === 'mod-med01' || sttContext === 'mod-med01-1') {
+          setTimeout(function () { startSTT(); }, 300);
+        }
+        return;
+      }
+
+      // network 에러: 일시적 네트워크 문제 → 재시도 (Mistake 없이)
+      if (err === 'network') {
+        if (sttContext === 'mod-med01' || sttContext === 'mod-med01-1') {
+          setTimeout(function () { startSTT(); }, 500);
+        }
+        return;
+      }
+
+      // 치명적 에러: 마이크 권한 없음, 서비스 불가 → Mistake 표시
+      if (err === 'not-allowed' || err === 'audio-capture' || err === 'service-not-allowed') {
+        if (sttContext === 'mod-med01' || sttContext === 'mod-med01-1') {
+          showMistake(); return;
+        }
+        var msg = '마이크 권한이 필요합니다';
+        if      (sttContext === 'active')      activeAgentTxtEl.textContent   = msg;
+        else if (sttContext === 'mod-med00-1') modMedMessageAgent.textContent = msg;
+        return;
+      }
+
+      // 그 외 알 수 없는 에러 → mod-med01 계열이면 Mistake, 나머지는 재시작
+      if (sttContext === 'mod-med01' || sttContext === 'mod-med01-1') {
+        showMistake();
+      } else {
+        setTimeout(function () { startSTT(); }, 300);
+      }
+    };
+  }
+
+  /* ── mod-med01 인식 중 표시 ── */
+  function updateMed01Display(confirmed, interim) {
+    var full = confirmed + interim;
+    var dim  = interim ? '<span style="opacity:0.5">' + interim + '</span>' : '';
+    if      (/주기/.test(full))      modMed01CycleMsg.innerHTML = confirmed + dim;
+    else if (/시간/.test(full))      modMed01UserTime.innerHTML = confirmed + dim;
+    else if (/용법|용량/.test(full))  modMed01UserVol.innerHTML  = confirmed + dim;
+    else                              modMed01UserMed.innerHTML  = confirmed + dim;
+  }
+
+  /* ── 발화 종료 처리 ── */
+  function onSpeechEnd() {
+    clearTimeout(silenceTimer);
+    var text = interimBuffer.trim();
+    var prev = sttContext;
+
+    if (prev === 'active') {
+      pendingAfterStop = function () { showScreen('screen-mod-med00-1'); };
+
+    } else if (prev === 'mod-med00-1') {
+      var next = classifyIntent(text);
+      pendingAfterStop = function () { showScreen(next); };
+
+    } else if (prev === 'mod-med01') {
+      var hasCycle = /주기/.test(text);
+      var hasTime  = /시간/.test(text);
+      var hasVol   = /용법|용량/.test(text);
+      if (hasCycle) {
+        var days = extractCycleDays(text);
+        pendingAfterStop = function () {
+          setCycleDays(days);
+          document.getElementById('mod-med05-user-medicine').textContent = modMed01UserMed.textContent;
+          document.getElementById('mod-med05-user-volume').textContent   = modMed01UserVol.textContent;
+          syncMed05Cycle(days);
+          showScreen('screen-mod-med05');
+        };
+      } else if (hasTime) {
+        var tv = extractTime(text);
+        pendingAfterStop = function () {
+          if (tv) modMed01UserTime.textContent = tv;
+          // tv가 null이면 시간 업데이트 안 함 (추출 실패)
+          document.getElementById('mod-med04-user-medicine').textContent = modMed01UserMed.textContent;
+          document.getElementById('mod-med04-user-volume').textContent   = modMed01UserVol.textContent;
+          document.getElementById('mod-med04-user-time').textContent     = modMed01UserTime.textContent;
+          showScreen('screen-mod-med04');
+        };
+      } else if (hasVol) {
+        var vv = extractVolume(text);
+        pendingAfterStop = function () {
+          modMed01UserVol.textContent = vv || text || '...';
+          document.getElementById('mod-med03-user-medicine').textContent = modMed01UserMed.textContent;
+          document.getElementById('mod-med03-user-volume').textContent   = modMed01UserVol.textContent;
+          showScreen('screen-mod-med03');
+        };
+      } else {
+        var mv = extractMedicineName(text);
+        pendingAfterStop = function () {
+          var finalName = mv || text || '...';
+          modMed01UserMed.textContent = finalName;
+          document.getElementById('mod-med02-user-medicine').textContent = finalName;
+          document.getElementById('mod-med02-user-volume').textContent   = modMed01UserVol.textContent;
+          showScreen('screen-mod-med02');
+        };
+      }
+
+    } else if (prev === 'mod-med01-1') {
+      var hasCycle1 = /주기/.test(text);
+      var hasTime1  = /시간|오전|오후/.test(text);
+      var hasVol1   = /용법|용량/.test(text);
+      pendingAfterStop = function () {
+        modMed01UserMed.textContent = document.getElementById('mod-med01-1-user-medicine').textContent;
+        modMed01UserVol.textContent = document.getElementById('mod-med01-1-user-volume').textContent;
+        if (hasCycle1) {
+          var d1 = extractCycleDays(text);
+          setCycleDays(d1);
+          document.getElementById('mod-med05-user-medicine').textContent = modMed01UserMed.textContent;
+          document.getElementById('mod-med05-user-volume').textContent   = modMed01UserVol.textContent;
+          syncMed05Cycle(d1);
+          showScreen('screen-mod-med05');
+        } else if (hasTime1) {
+          var tv1 = extractTime(text);
+          modMed01UserTime.textContent = tv1 || modMed01UserTime.textContent;
+          document.getElementById('mod-med04-user-medicine').textContent = modMed01UserMed.textContent;
+          document.getElementById('mod-med04-user-volume').textContent   = modMed01UserVol.textContent;
+          document.getElementById('mod-med04-user-time').textContent     = modMed01UserTime.textContent;
+          showScreen('screen-mod-med04');
+        } else if (hasVol1) {
+          var vv1 = extractVolume(text);
+          modMed01UserVol.textContent = vv1 || text || '...';
+          document.getElementById('mod-med01-1-user-volume').textContent = modMed01UserVol.textContent;
+          document.getElementById('mod-med03-user-medicine').textContent = modMed01UserMed.textContent;
+          document.getElementById('mod-med03-user-volume').textContent   = modMed01UserVol.textContent;
+          showScreen('screen-mod-med03');
+        } else if (classifyIntent(text) === 'screen-mod-med00-1no') {
+          syncMed012Values();
+          showScreen('screen-mod-med01-2');
+        } else {
+          var mv1 = extractMedicineName(text);
+          var name1 = mv1 || text || '...';
+          modMed01UserMed.textContent = name1;
+          document.getElementById('mod-med01-1-user-medicine').textContent = name1;
+          document.getElementById('mod-med02-user-medicine').textContent   = name1;
+          document.getElementById('mod-med02-user-volume').textContent     = modMed01UserVol.textContent;
+          showScreen('screen-mod-med02');
+        }
+      };
+    }
+
+    stopSTT();
+  }
+
+  /* ── Mistake 오버레이 ── */
+  function showMistake() {
+    var aiId  = sttContext === 'mod-med01-1' ? 'mod-med01-1-ai-overlay'      : 'mod-med01-ai-overlay';
+    var misId = sttContext === 'mod-med01-1' ? 'mod-med01-1-mistake-overlay' : 'mod-med01-mistake-overlay';
+    var ctx = sttContext;
+    document.getElementById(aiId).style.display  = 'none';
+    document.getElementById(misId).style.display = 'block';
+    setTimeout(function () {
+      document.getElementById(misId).style.display = 'none';
+      document.getElementById(aiId).style.display  = 'block';
+      sttContext = ctx;
+      startSTT();
+    }, 2000);
+  }
+
+  /* ── 의도 분류 ── */
+  function classifyIntent(text) {
+    var positive = /^(응|어|네|예|맞아|맞아요|ㅇㅇ|좋아|할게|수정|바꿔|바꾸|해줘|부탁)/.test(text.trim())
+                || /수정할게|수정해|바꿀게|바꿔줄게|바꿔달라|바꿔줘|바꾸고|해줘|해줄|변경|고쳐/.test(text);
+    return positive ? 'screen-mod-med01' : 'screen-mod-med00-1no';
+  }
+
+  function extractCycleDays(text) {
+    if (/평일/.test(text))             return ['월','화','수','목','금'];
+    if (/주말/.test(text))             return ['토','일'];
+    if (/매일|모두|전부/.test(text))    return ['일','월','화','수','목','금','토'];
+    return DAYS.filter(function(d) { return text.indexOf(d) !== -1; });
+  }
+
+  function extractTime(text) {
+    if (!text) return null;
+
+    // 한글 숫자 → 아라비아 숫자 변환
+    var KOR_NUM = {'영':0,'일':1,'이':2,'삼':3,'사':4,'오':5,'육':6,'칠':7,'팔':8,'구':9,
+                   '하나':1,'둘':2,'셋':3,'넷':4,'다섯':5,'여섯':6,'일곱':7,'여덟':8,'아홉':9,'열':10,
+                   '한':1,'두':2,'세':3,'네':4};
+    // "네 시" → "4시" 형태로 치환
+    var normalized = text
+      .replace(/(하나|둘|셋|넷|다섯|여섯|일곱|여덟|아홉|열|한|두|세|네|영|일|이|삼|사|오|육|칠|팔|구)\s*시/g, function(m, k) {
+        return (KOR_NUM[k] !== undefined ? KOR_NUM[k] : k) + '시';
+      })
+      .replace(/(하나|둘|셋|넷|다섯|여섯|일곱|여덟|아홉|열|한|두|세|네|영|일|이|삼|사|오|육|칠|팔|구)\s*분/g, function(m, k) {
+        return (KOR_NUM[k] !== undefined ? KOR_NUM[k] : k) + '분';
+      });
+
+    var p1 = normalized.match(/(오전|오후)\s*(\d{1,2})\s*시\s*(\d{1,2})\s*분/);
+    if (p1) return p1[1] + ' ' + p1[2] + '시 ' + p1[3] + '분';
+    var p2 = normalized.match(/(오전|오후)\s*(\d{1,2})\s*시/);
+    if (p2) return p2[1] + ' ' + p2[2] + '시';
+    var p3 = normalized.match(/(\d{1,2})\s*시\s*(\d{1,2})\s*분/);
+    if (p3) return p3[1] + '시 ' + p3[2] + '분';
+    var p4 = normalized.match(/(\d{1,2})\s*시/);
+    if (p4) return p4[1] + '시';
+    return null; // 추출 실패 시 null 반환
+  }
+
+  function extractMedicineName(text) {
+    if (!text) return null;
+    var p1 = text.match(/약\s*이름\s*(?:을|를|은|는|이)?\s*(.+?)(?:로|으로|을|를)?\s*(?:수정|변경|바꿔|바꿔줘|해줘|해|줘)/);
+    if (p1) return p1[1].trim();
+    var p2 = text.match(/(\S+?)(?:로|으로)\s*(?:수정|변경|바꿔|바꾸|교체)/);
+    if (p2) return p2[1].trim();
+    var p3 = text.match(/이름\s*(?:을|를|은|는|이)?\s*(\S+)/);
+    if (p3) return p3[1].trim();
+    return text.trim();
+  }
+
+  function extractVolume(text) {
+    if (!text) return null;
+    var p1 = text.match(/용법[, ]*용량\s+(.+?)(?:로|으로|을|를)?\s*(?:수정|변경|바꿔|바꾸|해줘|해|줘)/);
+    if (p1) return p1[1].trim();
+    var p2 = text.match(/용량\s+(.+?)(?:로|으로)\s*(?:수정|변경|바꿔|바꾸|해줘|해|줘)/);
+    if (p2) return p2[1].trim();
+    var p3 = text.match(/(\d+\s*(?:미리|밀리|mg|ml|그램|g|정|알|cc|mcg)[그램]?\s*(?:리터)?)(?:로|으로)/i);
+    if (p3) return p3[1].trim();
+    var p4 = text.match(/용량\s*(?:은|는|이)?\s*(.+)/);
+    if (p4) return p4[1].trim();
+    return text.trim();
+  }
+
+  function startSTT() {
+    if (!recognition) return;
+    interimBuffer = '';
+    clearTimeout(silenceTimer);
+    if (isListening) { pendingAfterStop = function () { startSTT(); }; try { recognition.stop(); } catch(e) {} }
+    else { try { recognition.start(); } catch(e) {} }
+  }
+
+  function stopSTT() {
+    if (!recognition) return;
+    clearTimeout(silenceTimer);
+    interimBuffer = '';
+    if (isListening) { try { recognition.stop(); } catch(e) {} }
+  }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     mod_med00 직접 편집 UI 초기화
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  function initMed00Screen() {
+    /* Active_btn → 수정값 저장 후 mod_med00_1로 */
+    var activeBtn = document.getElementById('mod-med00-active-btn');
+    activeBtn.onclick = function () {
+      /* 시간 picker가 열려 있으면 닫기 */
+      document.getElementById('mod-med00-time-picker').style.display = 'none';
+      /* 편집 중인 input이 있으면 blur로 저장 */
+      var inputs = document.querySelectorAll('#screen-mod-med00 .mod-med00-field-input');
+      inputs.forEach(function(inp) { if (inp.style.display !== 'none') inp.blur(); });
+      /* mod_med01 값 동기화 */
+      var medVal = document.getElementById('mod-med00-user-medicine').textContent;
+      var volVal = document.getElementById('mod-med00-user-volume').textContent;
+      var timeVal = document.getElementById('mod-med00-time-display').textContent;
+      if (medVal  && medVal  !== '...') modMed01UserMed.textContent  = medVal;
+      if (volVal  && volVal  !== '...') modMed01UserVol.textContent  = volVal;
+      if (timeVal && timeVal !== '오후 0:00') modMed01UserTime.textContent = timeVal;
+      /* 주기 버튼 동기화 */
+      DAYS.forEach(function(d) {
+        var src = document.getElementById('mod-med00-cycle-' + d);
+        var dst = document.getElementById('cycle-' + d);
+        if (src && dst) {
+          if (src.classList.contains('on')) dst.classList.add('on');
+          else dst.classList.remove('on');
+        }
+      });
+      showScreen('screen-mod-med00-1');
+    };
+
+    /* ── 값 동기화: mod_med01 현재 값 불러오기 ── */
+    var medVal  = modMed01UserMed.textContent  !== '...' ? modMed01UserMed.textContent  : '...';
+    var volVal  = modMed01UserVol.textContent  !== '...' ? modMed01UserVol.textContent  : '...';
+    var timeVal = modMed01UserTime.textContent !== '오후 0:00' ? modMed01UserTime.textContent : '오후 0:00';
+
+    document.getElementById('mod-med00-user-medicine').textContent = medVal;
+    document.getElementById('mod-med00-user-volume').textContent   = volVal;
+    document.getElementById('mod-med00-time-display').textContent  = timeVal;
+
+    /* 주기 버튼 동기화 */
+    DAYS.forEach(function(d) {
+      var src = document.getElementById('cycle-' + d);
+      var dst = document.getElementById('mod-med00-cycle-' + d);
+      if (src && dst) {
+        if (src.classList.contains('on')) dst.classList.add('on');
+        else dst.classList.remove('on');
+      }
+    });
+
+    /* ── user_medicine 터치 편집 ── */
+    setupInlineEdit(
+      'mod-med00-user-medicine-wrap',
+      'mod-med00-user-medicine',
+      'mod-med00-user-medicine-input',
+      function(val) { modMed01UserMed.textContent = val; }
+    );
+
+    /* ── user_volume 터치 편집 ── */
+    setupInlineEdit(
+      'mod-med00-user-volume-wrap',
+      'mod-med00-user-volume',
+      'mod-med00-user-volume-input',
+      function(val) { modMed01UserVol.textContent = val; }
+    );
+
+    /* ── 시간 영역 클릭 → picker 표시 ── */
+    var timeArea   = document.getElementById('mod-med00-time-area');
+    var timePicker = document.getElementById('mod-med00-time-picker');
+    var amBtn      = document.getElementById('mod-med00-am');
+    var pmBtn      = document.getElementById('mod-med00-pm');
+    var hourSel    = document.getElementById('mod-med00-hour-sel');
+    var minSel     = document.getElementById('mod-med00-min-sel');
+    var confirmBtn = document.getElementById('mod-med00-time-confirm');
+
+    /* select 옵션 채우기 */
+    hourSel.innerHTML = '';
+    for (var h = 1; h <= 12; h++) {
+      var o = document.createElement('option'); o.value = h; o.text = h + '시'; hourSel.appendChild(o);
+    }
+    minSel.innerHTML = '';
+    for (var m = 0; m < 60; m++) {
+      var om = document.createElement('option'); om.value = m; om.text = (m < 10 ? '0'+m : m) + '분'; minSel.appendChild(om);
+    }
+
+    /* 현재 값 파싱해서 picker 초기값 설정 */
+    var curTime = document.getElementById('mod-med00-time-display').textContent;
+    var ampm = /오전/.test(curTime) ? '오전' : '오후';
+    var hm = curTime.match(/(\d{1,2})시\s*(?:(\d{1,2})분)?/);
+    var curH = hm ? parseInt(hm[1]) : 0;
+    var curM = hm && hm[2] ? parseInt(hm[2]) : 0;
+    setAmpm(ampm);
+    hourSel.value = curH || 12;
+    minSel.value  = curM;
+
+    function setAmpm(val) {
+      ampm = val;
+      amBtn.classList.toggle('selected', val === '오전');
+      pmBtn.classList.toggle('selected', val === '오후');
+    }
+    amBtn.onclick = function() { setAmpm('오전'); };
+    pmBtn.onclick = function() { setAmpm('오후'); };
+
+    timeArea.onclick = function () {
+      timePicker.style.display = timePicker.style.display === 'none' ? 'block' : 'none';
+    };
+
+    confirmBtn.onclick = function () {
+      var h = parseInt(hourSel.value);
+      var mn = parseInt(minSel.value);
+      var timeStr = ampm + ' ' + h + '시 ' + mn + '분';
+      document.getElementById('mod-med00-time-display').textContent = timeStr;
+      modMed01UserTime.textContent = timeStr;
+      timePicker.style.display = 'none';
+    };
+
+    /* ── 주기 버튼 클릭 토글 ── */
+    DAYS.forEach(function(d) {
+      var btn = document.getElementById('mod-med00-cycle-' + d);
+      if (!btn) return;
+      btn.onclick = function () {
+        btn.classList.toggle('on');
+        /* mod_med01 주기도 동기화 */
+        var el01 = document.getElementById('cycle-' + d);
+        if (el01) { if (btn.classList.contains('on')) el01.classList.add('on'); else el01.classList.remove('on'); }
+      };
+    });
+  }
+
+  /* ── inline 편집 헬퍼 ── */
+  function setupInlineEdit(wrapId, textId, inputId, onSave) {
+    var wrap  = document.getElementById(wrapId);
+    var txt   = document.getElementById(textId);
+    var input = document.getElementById(inputId);
+
+    wrap.onclick = function (e) {
+      if (input.style.display !== 'none') return; /* 이미 편집 중 */
+      input.value = txt.textContent === '...' ? '' : txt.textContent;
+      txt.style.display   = 'none';
+      input.style.display = 'block';
+      input.focus();
+    };
+
+    input.onblur = function () {
+      var val = input.value.trim() || '...';
+      txt.textContent     = val;
+      input.style.display = 'none';
+      txt.style.display   = 'block';
+      onSave(val);
+    };
+
+    input.onkeydown = function (e) {
+      if (e.key === 'Enter') { input.blur(); }
+    };
+  }
+
+}); // DOMContentLoaded
+</script>
+
+</body>
+</html>
